@@ -13,6 +13,7 @@ const youtube = new YouTube(api);
 const music = new Map();
 const Util = require("discord.js")
 const fs = require("fs");
+client.embed = Discord.MessageEmbed;
 
 const { handleVideo, play } = require("./function.js")(Util, music, ytdl);
 
@@ -30,10 +31,17 @@ client.on("ready", () => {
   console.log(`Login as ${client.user.username}`)
 });
 
-
+let prefix = config.prefix;
 
 client.on("message", async message => {
   
+  const args = message.content.toLowerCase().slice(prefix.length).trim().split(/ +/g);
+  let cmd = args.shift();
+  
+  let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
+  if (!command) return;
+  
+  command.run(message, client, args, config)
 })
 
 // events akhir
