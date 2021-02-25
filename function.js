@@ -1,4 +1,5 @@
-module.exports = async (Util, music, ytdl, client, config) => {
+const { Util, music, ytdl, client, config } = require("./server.js"); 
+
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
     const song = {
@@ -78,5 +79,7 @@ function play(guild, song) {
       timeout: 5000
     }));
 }
-  
-}
+
+
+module.exports = {handleVideo, play}
+

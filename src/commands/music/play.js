@@ -7,7 +7,7 @@ exports.run = async (message, client, args, config) => {
             const videos = await playlist.getVideos();
             for (const video of Object.values(videos)) {
                 const video2 = await client.youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-                await client.function.handleVideo(video2, message, message.member.voice.channel, true); // eslint-disable-line no-await-in-loop
+                await client.handleVideo(video2, message, message.member.voice.channel, true); // eslint-disable-line no-await-in-loop
             }
             return message.channel.send()
         } else {
@@ -23,7 +23,7 @@ exports.run = async (message, client, args, config) => {
                     return message.channel.send("Im unable to find videos with this query")
                 }
             }
-            const a = client.function.handleVideo(video, message, message.member.voice.chanel);
+            const a = client.handleVideo(video, message, message.member.voice.channel);
         }  
   
 }
