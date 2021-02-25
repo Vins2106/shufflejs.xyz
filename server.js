@@ -45,7 +45,7 @@ client.on("message", async message => {
   let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!command) return;
   
-  command.run(message, client, args, config)
+  command.run(message, client, args, config, handleVideo, play, youtube, url)
 })
 
 // events akhir
@@ -57,7 +57,9 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         id: video.id,
         title: Util.escapeMarkdown(video.title),
         url: `https://www.youtube.com/watch?v=${video.id}`,
-        thumbnail: ``
+        thumbnail: video.thumbnails.medium,
+        duration: video.duration,
+        user: message.author
     };
     if (!serverQueue) {
         const queueConstruct = {
@@ -84,7 +86,12 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     } else {
         serverQueue.songs.push(song);
         if (playlist) return;
-        else return message.channel.send(`<:yes:591629527571234819>  **|**  **\`${song.title}\`** has been added to the queue`);
+        else return message.channel.send({
+          embed: {
+            color: config.embed,
+            description: `**${song.title}** has been added to queue`
+          }
+        });
     }
     return;
 }
@@ -108,12 +115,7 @@ function play(guild, song) {
         .on("error", error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
 
-    serverQueue.textChannel.send({
-        embed: {
-            color: "BLUE",
-            description: `🎶  **|**  Start Playing: **\`${song.title}\`**`
-        }
-    }).then(m => m.delete({
+    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}**- ${song.duration}`).setImage(song.thumbnail)).then(m => m.delete({
       timeout: 5000
     }));
 }
