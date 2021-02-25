@@ -6,7 +6,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         title: Util.escapeMarkdown(video.title),
         url: `https://www.youtube.com/watch?v=${video.id}`,
         duration: video.duration,
-        thumbnail: video.thumbnails.medium
+        thumbnail: video.thumbnails.medium,
+        user: message.author
     };
     if (!serverQueue) {
         const queueConstruct = {
@@ -38,7 +39,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         const playing = new client.embed()
         .setAuthor(`Playing music`)
         .setColor(config.color)
-        .description(`Now playing **${song.title}** - **${song.duration}**`)
+        .description(`Now playing **${song.title}** - **${song.duration}** (<@${song.user.id}>)`)
         .setImage(song.thumbnail)
         
         if (playlist) return;

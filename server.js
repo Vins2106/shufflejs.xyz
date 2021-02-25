@@ -17,6 +17,11 @@ client.embed = Discord.MessageEmbed;
 
 const { handleVideo, play } = require("./function.js")(Util, music, ytdl);
 
+client.function = {
+  handleVideo,
+  play
+}
+
 client.login(config.token)
 
 client.commands = new Discord.Collection();
