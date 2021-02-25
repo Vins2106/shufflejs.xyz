@@ -4,8 +4,13 @@ exports.run = async (message, client, args, config) => {
   .setAuthor(client.user.username + "", client.user.displayAvatarURL())
   .setDescription("Holla!")
   .setColor(config.embed)
+  .setFooter(`${config.prefix}help [category]`)
   
-  client
+  client.modules.forEach(cat => {
+    helpE.addField(`${cat.emoji} - ${cat.name}`, `**${cat.description}**`, true)
+  });
+  
+  message.channel.send(helpE)
   
 }
 
