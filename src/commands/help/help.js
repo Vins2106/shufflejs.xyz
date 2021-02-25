@@ -1,5 +1,14 @@
 exports.run = async (message, client, args, config) => {
   
+  if (client.modules.get(args[0])) {
+    let mod = client.modules.get(args[0]);
+    
+    const cmdE = new client.embed()
+    .setAuthor(`${mod.emoji} - ${mod.name}`)
+    .setColor(config.embed)
+    .setFooter("UwU!")
+  }
+  
   const helpE = new client.embed()
   .setAuthor(client.user.username + "", client.user.displayAvatarURL())
   .setDescription("Holla!")
