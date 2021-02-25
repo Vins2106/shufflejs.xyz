@@ -9,7 +9,13 @@ exports.run = async (message, client, args, config) => {
                 const video2 = await client.youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
                 await client.handleVideo(video2, message, message.member.voice.channel, true); // eslint-disable-line no-await-in-loop
             }
-            return message.channel.send()
+          
+          const playing = new client.embed()
+          .setAuthor("Now playing")
+          .setColor(config.color)
+          .setDescription(`Succesfully added ${playlist.title}!`)
+          
+            return message.channel.send(playing)
         } else {
             try {
                 var video = await client.youtube.getVideo(client.url);

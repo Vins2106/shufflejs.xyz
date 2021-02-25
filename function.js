@@ -40,11 +40,11 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         const playing = new client.embed()
         .setAuthor(`Playing music`)
         .setColor(config.color)
-        .description(`Now playing **${song.title}** - **${song.duration}** (<@${song.user.id}>)`)
+        .setDescription(`Now playing **${song.title}** - **${song.duration}** (<@${song.user.id}>)`)
         .setImage(song.thumbnail)
         
         if (playlist) return;
-      
+
         else return message.channel.send(playing);
     }
     return;
@@ -72,7 +72,7 @@ function play(guild, song) {
         const playing = new client.embed()
         .setAuthor(`Playing music`)
         .setColor(config.color)
-        .description(`Now playing **${song.title}** - **${song.duration}**`)
+        .setDescription(`Now playing **${song.title}** - **${song.duration}**`)
         .setImage(song.thumbnail)  
   
     serverQueue.channel.text.send(playing).then(m => m.delete({
