@@ -3,9 +3,36 @@ const client = new Discord.Client({
   disableMentions: "everyone"
 });
 
-require("dotenv").config()
+require("dotenv").config();
+let config = require("./config.js");
 
-let config = require("./src/config/config.js");
+const YouTube = require("simple-youtube-api");
+const ytdl = require("ytdl-core");
+const api = config.yt_api;
+const youtube = new YouTube(api);
+const music = new Map();
+const Util = require("discord.js")
+const fs = require("fs");
 
-require("./src/client/login.js")(Discord, client, config);
-require("./src/handler/event.js")(client)
+const { handleVideo, play } = require("./function.js")(Util, music, ytdl);
+
+client.login(config.token)
+
+client.commands = new Discord.Collection();
+client.modules = new Discord.Collection();
+
+require("")
+
+// events
+
+client.on("ready", () => {
+  console.log(`Login as ${client.user.username}`)
+});
+
+
+
+client.on("message", async message => {
+  
+})
+
+// events akhir
