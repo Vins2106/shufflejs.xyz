@@ -22,7 +22,7 @@ client.commands = new Discord.Collection();
 client.modules = new Discord.Collection();
 client.aliases = new Discord.Collection();
 
-require("./src/module.js")
+require("./src/module.js")(client, fs)
 
 // events
 
