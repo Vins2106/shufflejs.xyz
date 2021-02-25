@@ -27,7 +27,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
 
         try {
             var connection = await voiceChannel.join();
-            queueConstruct.connection = connection;
+            queueConstruct.opt.connection = connection;
             play(message.guild, queueConstruct.songs[0]);
         } catch (error) {
             music.delete(message.guild.id);
@@ -52,14 +52,14 @@ function play(guild, song) {
     const serverQueue = music.get(guild.id);
 
     if (!song) {
-        serverQueue.voiceChannel.leave();
+        serverQueue.channel.voice.leave();
         return music.delete(guild.id);
     }
 
-    const dispatcher = serverQueue.connection.play(ytdl(song.url))
+    const dispatcher = serverQueue.opt.connection.play(ytdl(song.url))
         .on("finish", () => {
             const shiffed = serverQueue.songs.shift();
-            if (serverQueue.loop === true) {
+            if (serverQueue.opt.loop === true) {
                 serverQueue.songs.push(shiffed);
             };
             play(guild, serverQueue.songs[0]);
@@ -73,7 +73,7 @@ function play(guild, song) {
         .description(`Now playing **${song.title}** - **${song.duration}**`)
         .setImage(song.thumbnail)  
   
-    serverQueue.textChannel.send(playing).then(m => m.delete({
+    serverQueue.channel.text.send(playing).then(m => m.delete({
       timeout: 5000
     }));
 }
