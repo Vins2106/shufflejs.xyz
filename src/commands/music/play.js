@@ -7,7 +7,7 @@ exports.run = async (message, client, args, config) => {
             const videos = await playlist.getVideos();
             for (const video of Object.values(videos)) {
                 const video2 = await client.youtube.getVideoByID(video.id); // eslint-disable-line no-await-in-loop
-                await client.handleVideo(video2, message, message.member.voice.channel, true); // eslint-disable-line no-await-in-loop
+                await client.function.handleVideo(video2, message, message.member.voice.channel, true); // eslint-disable-line no-await-in-loop
             }
             return message.channel.send()
         } else {
@@ -15,25 +15,15 @@ exports.run = async (message, client, args, config) => {
                 var video = await client.youtube.getVideo(client.url);
             } catch (error) {
                 try {
-                    var videos = await client.youtube.searchVideos(args.join(""), 10);
-                    var video = await youtube.getVideoByID(videos[0].id);
-                    if (!video) return message.channel.send({
-                        embed: {
-                            color: color,
-                            description: "Sorry, nothing found"
-                        }
-                    });
+                    var videos = await client.youtube.searchVideos(args.join(" "), 10);
+                    var video = await client.youtube.getVideoByID(videos[0].id);
+                    if (!video) return message.channel.send("Im unable to find videos with this query, try again")
                 } catch (err) {
                     console.error(err);
-                    return message.channel.send({
-                        embed: {
-                            color: color,
-                            description: "Sorry, nothing found"
-                        }
-                    });
+                    return message.channel.send("Im unable to find videos with this query")
                 }
             }
-            const a = handleVideo(video, message, voiceChannel);
+            const a = client.function.handleVideo(video, message, message.member.voice.chanel);
         }  
   
 }
