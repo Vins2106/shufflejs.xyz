@@ -7,6 +7,10 @@ exports.run = async (message, client, args, config) => {
     .setAuthor(`${mod.emoji} - ${mod.name}`)
     .setColor(config.embed)
     .setFooter("UwU!")
+    
+    mod.cmds.forEach(cmd => {
+      cmdE.addField(`${cmd.name} - ${cmd.cooldown}`, `**[${cmd.aliases.map(a => `\`${a}\``).join(", ")}]**`)
+    });
   }
   
   const helpE = new client.embed()
