@@ -23,7 +23,7 @@ module.exports = async (client, fs) => {
             client.aliases.set(a, commandConfig.config.name)
           });
           
-          client.modules.get(cat).cmds.push(commandConfig.config.name)
+          client.modules.get(cat).cmds.push(commandConfig.config)
         })
       })
     })

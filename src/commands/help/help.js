@@ -9,8 +9,12 @@ exports.run = async (message, client, args, config) => {
     .setFooter("UwU!")
     
     mod.cmds.forEach(cmd => {
-      cmdE.addField(`${cmd.name} - ${cmd.cooldown}`, `**[${cmd.aliases.map(a => `\`${a}\``).join(", ")}]**`)
+      cmdE.addField(`${cmd.name} - ${cmd.cooldown}`, `\n\n**[${cmd.aliases.join(", ")}]**\n**${cmd.description}**`, true)
     });
+    
+    return message.channel.send(cmdE)
+  } else if(client.commands.has(args[0]) || client.commands.get(client.aliases.get(args[0]))) {
+    let cmd 
   }
   
   const helpE = new client.embed()
@@ -29,7 +33,7 @@ exports.run = async (message, client, args, config) => {
 
 exports.config = {
   name: "help",
-  description: "",
+  description: "Show all commands",
   aliases: ["h", "cmds", "cmdslist"],
   cooldown: 10
 }
