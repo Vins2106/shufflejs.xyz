@@ -20,8 +20,9 @@ client.login(config.token)
 
 client.commands = new Discord.Collection();
 client.modules = new Discord.Collection();
+client.aliases = new Discord.Collection();
 
-require("")
+require("./src/module.js")
 
 // events
 
