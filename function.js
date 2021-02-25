@@ -1,4 +1,4 @@
-const { Util, music, ytdl, client, config } = require("./server.js"); 
+const { Util, music, ytdl, client, config, Discord } = require("./server.js"); 
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
@@ -37,11 +37,10 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         }
     } else {
         serverQueue.songs.push(song);
-        const playing = new client.embed()
-        .setAuthor(`Playing music`)
-        .setColor(config.color)
-        .setDescription(`Now playing **${song.title}** - **${song.duration}** (<@${song.user.id}>)`)
-        .setImage(song.thumbnail)
+        
+        const playing = new Discord.MessageEmbed()
+        .setAuthor("Now playing")
+        .setDescription(`**${song.title}**`)
         
         if (playlist) return;
 

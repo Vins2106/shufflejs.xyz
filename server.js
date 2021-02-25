@@ -19,7 +19,7 @@ client.embed = Discord.MessageEmbed;
 client.youtube = youtube
 client.Util = Util
 
-module.exports = {Util, music, ytdl, client, config}
+module.exports = {Util, music, ytdl, client, config, Discord}
 
 const { handleVideo, play } = require("./function.js")
 
