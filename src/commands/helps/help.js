@@ -14,13 +14,13 @@ exports.run = async (message, client, args, config) => {
     
     return message.channel.send(modE)
   } else if(client.commands.has(args[0]) || client.commands.get(client.aliases.get(args[0]))) {
-    let cmd = client.commands.has(args[0]) || client.commands.get(client.aliases.get(args[0]));
+    let cmd = client.commands.get(args[0]) || client.commands.get(client.aliases.get(args[0]));
     
     let cmdE = new client.embed()
-    .setAuthor(`${cmd.name} - ${cmd.cooldown}s`)
-    .setDescription(`**${cmd.description}**`)
-    .addField(`Aliaes`, `**[${cmd.aliases.join(", ")}]**`)
-    .setColor(config.color)
+    .setAuthor(`${cmd.config.name} - ${cmd.config.cooldown}s`)
+    .setDescription(`**${cmd.config.description}**`)
+    .addField(`Aliases`, `**[${cmd.config.aliases.join(", ")}]**`)
+    .setColor(config.embed)
     
     return message.channel.send(cmdE)
   }
