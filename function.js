@@ -38,11 +38,12 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         const playing = new client.embed()
         .setAuthor(`Playing music`)
         .setColor(config.color)
-        .description(`Now playing **${song.title}**`)
+        .description(`Now playing **${song.title}** - **${song.duration}**`)
+        .setImage(song.thumbnail)
         
         if (playlist) return;
       
-        else return message.channel.send(``);
+        else return message.channel.send(playing);
     }
     return;
 }
@@ -66,12 +67,13 @@ function play(guild, song) {
         .on("error", error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
 
-    serverQueue.textChannel.send({
-        embed: {
-            color: "BLUE",
-            description: `🎶  **|**  Start Playing: **\`${song.title}\`**`
-        }
-    }).then(m => m.delete({
+        const playing = new client.embed()
+        .setAuthor(`Playing music`)
+        .setColor(config.color)
+        .description(`Now playing **${song.title}** - **${song.duration}**`)
+        .setImage(song.thumbnail)  
+  
+    serverQueue.textChannel.send(playing).then(m => m.delete({
       timeout: 5000
     }));
 }
