@@ -16,6 +16,7 @@
     "ytdl-core": "^4.4.5",
     "simple-youtube-api": "^5.2.1",
     "parse-ms": "^2.1.0",
-    "fs": "^0.0.2"
+    "fs": "^0.0.2",
+    "dotenv": "^8.2.0"
   }
 }

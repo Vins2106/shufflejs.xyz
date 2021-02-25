@@ -1,6 +1,8 @@
+require("dotenv").config();
+
 const data = {
-  token: "",
-  prefix: "",
+  token: process.env.token,
+  prefix: "s",
   owner: {
     id: ""
   },

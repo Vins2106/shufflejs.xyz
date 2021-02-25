@@ -1,5 +1,6 @@
 dependencies:
   discord.js: 12.5.1
+  dotenv: 8.2.0
   fs: 0.0.2
   parse-ms: 2.1.0
   simple-youtube-api: 5.2.1
@@ -139,6 +140,12 @@ packages:
       node: '>=12.0.0'
     resolution:
       integrity: sha512-VwZkVaUAIOB9mKdca0I5MefPMTQJTNg0qdgi1huF3iwsFwJ0L5s/Y69AQe+iPmjuV6j9rtKoG0Ta0n9vgEIL6w==
+  /dotenv/8.2.0:
+    dev: false
+    engines:
+      node: '>=8'
+    resolution:
+      integrity: sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
   /eastasianwidth/0.2.0:
     dev: false
     resolution:
@@ -367,6 +374,7 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   discord.js: ^12.5.1
+  dotenv: ^8.2.0
   fs: ^0.0.2
   parse-ms: ^2.1.0
   simple-youtube-api: ^5.2.1
