@@ -35,6 +35,18 @@ client.on("ready", () => {
 let prefix = config.prefix;
 
 client.on("voiceStateUpdate", async (oldS, newS) => {
+  if (oldS.member.id === client.user.id) {
+    
+    if (music.get(oldS.guild.id).voiceChannel.id == oldS.channelID) {
+      
+      
+      
+    }
+    
+  }
+})
+
+client.on("voiceStateUpdate", async (oldS, newS) => {
   
   if (music.get(oldS.guild.id)) {
     if (music.get(oldS.guild.id).voiceChannel.id == oldS.channelID) {
@@ -148,6 +160,10 @@ function play(message, song) {
 
     if (!song) {
         serverQueue.voiceChannel.leave();
+        serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
+          timeout: 5000
+        }))
+      
         return music.delete(guild.id);
     }
 
