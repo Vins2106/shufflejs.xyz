@@ -37,16 +37,23 @@ let prefix = config.prefix;
 client.on("voiceStateUpdate", async (oldS, newS) => {
   
   if (music.get(newS.guild.id)) {
-      if (client.guildConfig.get(`config.${newS.guild.id}.leaveOnEmpty`)) {
-        setTimeout(function() {
-          let serverQueue = music.get(newS.guild.id);
-          serverQueue.voiceChannel.leave();
+    if (music.get(newS.guild.id).voiceChannel.id == newS.channelID) {
+      try {
+      if (newS.channel.members.size < 2) {
+       setTimeout(function() {
+        if (newS.channel.members.size < 2) {
+        music.get(newS.guild.id).voiceChannel.leave();
           
-          
-          music.delete(newS.guild.id)
-          
-        }, 60000)
-      }    
+        return music.delete(newS.guild.id);
+      } else {
+        return;
+      }
+       }, 60000) 
+      }        
+      } catch (e) {
+        return;
+      }
+    }
   }
   
 })
