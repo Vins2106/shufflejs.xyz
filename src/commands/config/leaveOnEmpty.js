@@ -12,11 +12,16 @@ exports.run = async (message, client, args, config) => {
   } else if (query === "disable" || query === "off" || query === "false") {
     
   } else {
-    return message.channel.send(`>:c
+    return message.channel.send(`**>:c
 enable:
 ${config.prefix}leave-on-empty enable
 ${config.prefix}leave-on-empty on
-${config.prefix}leave-on-empty`)
+${config.prefix}leave-on-empty true
+
+disable: 
+${config.prefix}leave-on-empty disable
+${config.prefix}leave-on-empty off
+${config.prefix}leave-on-empty false**`)
   }
   
 }
