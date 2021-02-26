@@ -117,7 +117,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         try {
             var connection = await voiceChannel.join()
             queueConstruct.connection = connection;
-            play(message.guild, queueConstruct.songs[0]);
+            play(message, queueConstruct.songs[0]);
             
           connection.voice.setSelfDeaf(true); 
           
@@ -172,7 +172,6 @@ function play(message, song) {
       
       m.react("🔀");
       m.react("🔁");
-      m.react("▶️");
       m.react("⏭️");
       m.react("⏯️");
       m.react("🔈");
@@ -215,7 +214,7 @@ function play(message, song) {
             
             serverQueue.shuffle = _enable;
             
-            serverQueue.textChannel.send(`Server option for shuffle has been turn **${serverQueue.shuffle ? "On" : "Off"}** ! c:`).then(m => m.delete({
+            serverQueue.textChannel.send(`Server option for shuffle has been turn **${serverQueue.shuffle ? "On" : "Off"}** ! c:`).then(m2 => m2.delete({
               timeout: 5000
             }))            
             
@@ -229,7 +228,32 @@ function play(message, song) {
             
             let loop = serverQueue.loop ? true : false;
             
+            let _loop;
             
+            if (loop) _loop = false;
+            if (!loop) _loop = true;
+            
+            serverQueue.loop = _loop;
+            
+            serverQueue.textChannel.send(`Server option for loop has been turn **${serverQueue.loop ? "On" : "Off"}** ! \:D`)
+            
+            break;
+            
+          case "⏭️":
+            
+            reaction.users.remove(user);
+            
+            if (!canModify(member)) return message.member.send(`You cannot use this react!\n${m.url}`)
+            
+            if (user.id !== serverQueue.songs[0].user.id) return message.channel.send(`Oops **${user.tag}**, you cant use this react! if want to skip music, use **${config.prefix}vote-skip** command \:D`).then(m2 => m2.delete({
+              timeout: 5000
+            }))
+            
+             serverQueue.connection.dispatcher.end();
+            
+            serverQueue.textChannel.send(`**${user.tag}** skip the song :>`).then(m2 => m2.delete({
+              timeout: 5000
+            }))
             
             break;
         }
