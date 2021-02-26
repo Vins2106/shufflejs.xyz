@@ -36,22 +36,22 @@ let prefix = config.prefix;
 
 client.on("voiceStateUpdate", async (oldS, newS) => {
   
-  if (music.get(newS.guild.id)) {
-    if (music.get(newS.guild.id).voiceChannel.id == newS.channelID) {
+  if (music.get(oldS.guild.id)) {
+    if (music.get(oldS.guild.id).voiceChannel.id == oldS.channelID) {
       try {
-      if (newS.channel.members.size < 2) {
+      if (oldS.channel.members.size < 2) {
        setTimeout(function() {
-        if (newS.channel.members.size < 2) {
-        music.get(newS.guild.id).voiceChannel.leave();
+        if (oldS.channel.members.size < 2) {
+        music.get(oldS.guild.id).voiceChannel.leave();
           
-        return music.delete(newS.guild.id);
+        music.delete(oldS.guild.id);
       } else {
-        return console.log("Cancel!")
+        console.log("Cancel!")
       }
        }, 60000) 
       }        
       } catch (e) {
-        return console.log(`oh no ${e}`)
+        console.log(`oh no ${e}`)
       }
     }
   }
