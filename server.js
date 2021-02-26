@@ -35,32 +35,28 @@ client.on("ready", () => {
 let prefix = config.prefix;
 
 client.on("voiceStateUpdate", async (oldS, newS) => {
-  if (oldS.member.id == client.user.id || newS.member.id == client.user.id) {
-    
-    if (music.get(oldS.guild.id).voiceChannel.id == newS.channelID) {
-      
-      music.get(oldS.guild.id).warn = true;
-      
-      setTimeout(function() {
-        
-        try {
-        if (oldS.channel.id == oldS.guild.me.voice.channel.id) {
-          return;
-        }           
-        } catch (e) {
-          console.log(`VOICE ${e}`)
+  
+  if (music.get(oldS.guild.id)) {
+    if (music.get(oldS.guild.id).voiceChannel.id == oldS.channelID) {
+      try {
+      if (oldS.channel.members.size < 2) {
+       setTimeout(function() {
+        if (oldS.channel.members.size < 2) {
+        music.get(oldS.guild.id).voiceChannel.leave();
           
-          return music.delete(oldS.guild.id)
-        }
-        
-      }, 60000)
-      
+        music.delete(oldS.guild.id);
+      } else {
+        return;
+      }
+       }, 60000) 
+      }        
+      } catch (e) {
+        console.log(`oh no ${e}`)
+      }
     }
-    
   }
+  
 })
-
-
 
 client.on("guildCreate", async guild => {
   client.guildConfig.set(`config.${guild.id}`, {
