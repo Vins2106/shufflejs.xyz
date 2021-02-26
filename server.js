@@ -46,12 +46,12 @@ client.on("voiceStateUpdate", async (oldS, newS) => {
           
         return music.delete(newS.guild.id);
       } else {
-        return;
+        return console.log("Cancel!")
       }
        }, 60000) 
       }        
       } catch (e) {
-        return;
+        return console.log(`oh no ${e}`)
       }
     }
   }
