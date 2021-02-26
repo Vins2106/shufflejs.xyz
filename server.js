@@ -152,7 +152,12 @@ function play(guild, song) {
             if (serverQueue.loop === true) {
                 serverQueue.songs.push(shiffed);
             };
-            play(guild, serverQueue.songs[0]);
+            let playMusic = play(guild, serverQueue.songs[0]);
+            if (!playMusic) {
+              serverQueue.textChannel.send(`No more song in queue \:(\nSee you next time, play music with ${config.prefix}play`)
+              
+              return serverQueue.voiceChannel.leave();
+            }
         })
         .on("error", error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
