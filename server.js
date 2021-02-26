@@ -89,12 +89,14 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     } else {
         serverQueue.songs.push(song);
         if (playlist) return;
-        else return message.channel.send({
-          embed: {
-            color: config.embed,
-            description: `**${song.title}** has been added to queue`
-          }
-        });
+        else return message.channel.send(
+        new Discord.MessageEmbed()
+          .setAuthor("New song added to queue!")
+          .setColor(config.embed)
+          .setTitle(`${song.title} - ${song.duration.hours} : ${song.duration.minutes} : ${song.duration.seconds}`)
+          .setDescription(`${song.url}`)
+          .setImage(song.thumbnail.url)
+        );
     }
     return;
 }
@@ -118,7 +120,7 @@ function play(guild, song) {
         .on("error", error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
 
-    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}**- ${song.duration.hours} : ${song.duration.minutes}`).setImage(song.thumbnail.url)).then(m => {
+    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {
       
       m.react("🗑️");
       
