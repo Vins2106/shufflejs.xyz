@@ -199,11 +199,14 @@ function play(guild, song) {
               return user.send(`Oops, only ${serverQueue.songs[0].user.tag} can use this react! >:c\n${m.url}`)
             }
             
-            let EnableOrDisable = serverQueue.shuffle ? true : false;
+            break;
             
-            serverQueue.shuffle = EnableOrDisable;
+          case "🔁":
             
-            serverQueue.textChannel.send(`Loop now **${serverQueue.shuffle ? "On" : "Off"}** 🎉`)
+            reaction.users.remove(user);
+            
+            
+            
             
             break;
         }
