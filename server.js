@@ -82,7 +82,7 @@ client.on("message", async message => {
   let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!command) return;
   
-  command.run(message, client, args, config, handleVideo, play, youtube, url)
+  command.run(message, client, args, music, config, handleVideo, play, youtube, url)
 })
 
 // events akhir

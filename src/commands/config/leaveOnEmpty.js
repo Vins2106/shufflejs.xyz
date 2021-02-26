@@ -1,4 +1,4 @@
-exports.run = async (message, client, args, config) => {
+exports.run = async (message, client, args, music, config)  => {
   
   let query = args[0];
   
@@ -10,9 +10,17 @@ exports.run = async (message, client, args, config) => {
   let loe = client.guildConfig.get(`config.${message.guild.id}.leaveOnEmpty`);
   
   if (query === "enable" || query === "on" || query === "true") {
-    if (loe) return message.channel.send("leaveOnEmpty already turn on! >:c")
+    if (loe) return message.channel.send("❎ - leaveOnEmpty already turn on! >:c")
+    
+    client.guildConfig.set(`config.${message.guild.id}.leaveOnEmpty`, true)
+    
+    return message.channel.send("✅ - Succesfully enable leaveOnEmpty \:D")
   } else if (query === "disable" || query === "off" || query === "false") {
-    if (!loe) return message.channel.send("leaveOnEmpty already turn off! >:|")
+    if (!loe) return message.channel.send("❎ - leaveOnEmpty already turn off! >:|")
+    
+    client.guildConfig.set(`config.${message.guild.id}.leaveOnEmpty`, false)
+    
+    return message.channel.send("✅ - Succesfully disable leaveOnEmpty \D:")    
   } else {
     return message.channel.send(`**>:c
 enable:

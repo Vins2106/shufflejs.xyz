@@ -1,4 +1,4 @@
-exports.run = async (message, client, args, config) => {
+exports.run = async (message, client, args, music, config)  => {
   
   if (client.modules.get(args[0])) {
     let mod = client.modules.get(args[0]);

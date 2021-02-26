@@ -1,4 +1,4 @@
-exports.run = async (message, client, args, config, handleVideo, play, youtube, url) => {
+exports.run = async (message, client, args, music, config, handleVideo, play, youtube, url) => {
 
   if (!message.member.voice.channel) return message.channel.send("Please join a voice channel first ! >:c");
   
