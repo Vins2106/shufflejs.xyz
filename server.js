@@ -106,7 +106,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             songs: [],
             volume: 100,
             playing: true,
-            loop: false
+            loop: false,
+            shuffle: false
         };
         music.set(message.guild.id, queueConstruct);
         queueConstruct.songs.push(song);
@@ -152,6 +153,12 @@ function play(guild, song) {
             if (serverQueue.loop === true) {
                 serverQueue.songs.push(shiffed);
             };
+          if (serverQueue.shuffle) {
+            let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
+            if (!random) return;
+            
+            return play(guild, random)
+          }
             let playMusic = play(guild, serverQueue.songs[0]);
         })
         .on("error", error => console.error(error));

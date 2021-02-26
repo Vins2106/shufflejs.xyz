@@ -1,5 +1,7 @@
 exports.run = async (message, client, args, music, config)  => {
   
+  if (!message.member.hasPermission("MANAGE_MESSAGES")) return message.channel.send(`LOOKS LIKE YOU DO NOT HAVE **Manage Guild**`)
+  
   let query = args[0];
   
   
