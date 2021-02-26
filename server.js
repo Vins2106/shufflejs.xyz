@@ -60,29 +60,7 @@ client.on("voiceStateUpdate", async (oldS, newS) => {
   }
 })
 
-client.on("voiceStateUpdate", async (oldS, newS) => {
-  
-  if (music.get(oldS.guild.id)) {
-    if (music.get(oldS.guild.id).voiceChannel.id == oldS.channelID) {
-      try {
-      if (oldS.channel.members.size < 2) {
-       setTimeout(function() {
-        if (oldS.channel.members.size < 2) {
-        music.get(oldS.guild.id).voiceChannel.leave();
-          
-        music.delete(oldS.guild.id);
-      } else {
-        return;
-      }
-       }, 60000) 
-      }        
-      } catch (e) {
-        console.log(`oh no ${e}`)
-      }
-    }
-  }
-  
-})
+
 
 client.on("guildCreate", async guild => {
   client.guildConfig.set(`config.${guild.id}`, {
@@ -135,8 +113,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             volume: 100,
             playing: true,
             loop: false,
-            shuffle: false,
-            warn: false
+            shuffle: false
         };
         music.set(message.guild.id, queueConstruct);
         queueConstruct.songs.push(song);

@@ -17,12 +17,7 @@ exports.run = async (message, client, args, music, config) => {
   ${songs.map(song => `**[${++index}.]** - **${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).join("\n")}`)
   .setImage(queue.songs[0].thumbnail.url)
   .setColor(config.embed)
-  
-  if (queue.warn) {
-    queueE.setFooter(`warn: the bot is longer on voice channel, make the bot join ${queue.voiceChannel.name} again! - This songs from 1 - 10 in queue`)
-  } else {
-    queueE.setFooter(`This songs from 1 - 10 in queue`)
-  }
+  .setFooter(`This songs from 1 - 10 in queue`)
   
   message.channel.send(queueE)
   
