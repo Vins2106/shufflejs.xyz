@@ -115,7 +115,25 @@ function play(guild, song) {
         .on("error", error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
 
-    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}**- ${song.duration}`).setImage(song.thumbnail)).then(m => m.delete({
-      timeout: 5000
-    }));
+    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}**- ${song.duration}`).setImage(song.thumbnail.url)).then(m => {
+      
+      m.react("🗑️");
+      
+      const filter = (reaction, user) => user.id !== client.user.id;
+      var collector = m.createReactionCollector(filter)
+      
+      collector.on("collect", async (reaction, user) => {
+        
+        switch(reaction.emoji.name) {
+          case "🗑️": 
+            
+            m.delete();
+            
+            break;
+        }
+        
+      })
+      
+      
+    })
 }
