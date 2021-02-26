@@ -16,6 +16,7 @@ const fs = require("fs");
 
 client.embed = Discord.MessageEmbed;
 
+client.guildConfig = require("quick.db")
 
 client.login(config.token)
 
@@ -32,6 +33,18 @@ client.on("ready", () => {
 });
 
 let prefix = config.prefix;
+
+client.on("voiceStateUpdate", async (oldS, newS) => {
+  
+  if (music.get(newS.guild.id)) {
+      if (client.guildConfig.get(`config.${newS.guild.id}.leaveOnEmpty`)) {
+        setTimeout(function() {
+          
+        }, 60000)
+      }    
+  }
+  
+})
 
 client.on("message", async message => {
   
