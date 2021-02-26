@@ -35,9 +35,9 @@ client.on("ready", () => {
 let prefix = config.prefix;
 
 client.on("voiceStateUpdate", async (oldS, newS) => {
-  if (oldS.member.id === client.user.id) {
+  if (oldS.member.id == client.user.id || newS.member.id == client.user.id) {
     
-    if (music.get(oldS.guild.id).voiceChannel.id == oldS.channelID) {
+    if (music.get(oldS.guild.id).voiceChannel.id == newS.channelID) {
       
       music.get(oldS.guild.id).warn = true;
       
@@ -48,6 +48,8 @@ client.on("voiceStateUpdate", async (oldS, newS) => {
           return;
         }           
         } catch (e) {
+          console.log(`VOICE ${e}`)
+          
           return music.delete(oldS.guild.id)
         }
         
@@ -110,7 +112,7 @@ client.on("message", async message => {
 })
 
 // events akhir
-
+ 
 // function
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);

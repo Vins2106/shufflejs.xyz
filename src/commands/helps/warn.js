@@ -2,7 +2,9 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   if (!music.get(message.guild.id)) return message.channel.send(`Uh, this server do not play any song >:c`)
   
-  return message.channel.send(`The **${message.guild.name}** warn is **${music.get(message.guild.id).warn ? "GooD, the bot still on " : ""}**`)
+  const queue = music.get(message.guild.id);
+  
+  return message.channel.send(`The **${message.guild.name}** warn is **${queue.warn ? `GooD the bot still on \`${music.get(message.guild.id).voiceChannel.name}\`` : `Oh no, the bot is no longer leave from voice, make the bot join the voice again!`}**`)
   
 }
 
