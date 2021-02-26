@@ -187,16 +187,16 @@ function play(guild, song) {
             reaction.users.remove(user)
             
             m.delete()
-            
+             
             break;
             
-         
+          
           case "🔀": 
             
             reaction.users.remove(user);
             
             if (user.id !== serverQueue.songs[0].user.id) {
-              return user.send(`Oops, you do not have permission to react this message! >:c\n${m.url}`)
+              return user.send(`Oops, only ${serverQueue.songs[0].user.tag} can use this react! >:c\n${m.url}`)
             }
             
             let EnableOrDisable = serverQueue.shuffle ? true : false;
