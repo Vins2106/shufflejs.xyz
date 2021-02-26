@@ -46,7 +46,7 @@ client.on("voiceStateUpdate", async (oldS, newS) => {
           
         music.delete(oldS.guild.id);
       } else {
-        console.log("Cancel!")
+        return;
       }
        }, 60000) 
       }        
