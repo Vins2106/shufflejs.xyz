@@ -141,7 +141,9 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     return;
 }
 
-function play(guild, song) {
+function play(message, song) {
+  const guild = message.guild;
+  
     const serverQueue = music.get(guild.id);
 
     if (!song) {
@@ -159,9 +161,9 @@ function play(guild, song) {
             let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
             if (!random) return;
             
-            return play(guild, random)
+            return play(message, random)
           }
-            let playMusic = play(guild, serverQueue.songs[0]);
+            let playMusic = play(message, serverQueue.songs[0]);
         })
         .on("error", error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
@@ -182,6 +184,11 @@ function play(guild, song) {
       var collector = m.createReactionCollector(filter)
       
       collector.on("collect", async (reaction, user) => {
+        const member = message.guild.member(user)
+        
+        function canModify(member) {
+          if (member.voice.channel.id !== serverQueue.voiceChannel.id) return false; else return true;
+        }
         
         switch(reaction.emoji.name) {
           case "🗑️": 
@@ -197,9 +204,7 @@ function play(guild, song) {
             
             reaction.users.remove(user);
             
-            if (user.id !== serverQueue.songs[0].user.id) {
-              return user.send(`Oops, only ${serverQueue.songs[0].user.tag} can use this react! >:c\n${m.url}`)
-            }
+            if (!canModify(member)) return message.member.send(`You cannot use this react!\n${m.url}`)
             
             let EnableOrDisable = serverQueue.shuffle ? true : false;
             
@@ -219,6 +224,10 @@ function play(guild, song) {
           case "🔁":
             
             reaction.users.remove(user);
+            
+            if (!canModify(member)) return message.channel.send(`You cannot use this react!\n${m.url}`)
+            
+            let loop = serverQueue.loop ? true : false;
             
             
             
