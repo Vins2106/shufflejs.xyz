@@ -1,4 +1,4 @@
-exports.run = async (message, client, args, config) => {
+exports.run = async (message, client, args, music, config, handleVideo, play, youtube, url) => {
 
 }
 

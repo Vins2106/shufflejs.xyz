@@ -39,7 +39,19 @@ client.on("voiceStateUpdate", async (oldS, newS) => {
     
     if (music.get(oldS.guild.id).voiceChannel.id == oldS.channelID) {
       
+      music.get(oldS.guild.id).warn = true;
       
+      setTimeout(function() {
+        
+        try {
+        if (oldS.channel.id == oldS.guild.me.voice.channel.id) {
+          return;
+        }           
+        } catch (e) {
+          return music.delete(oldS.guild.id)
+        }
+        
+      }, 60000)
       
     }
     
@@ -121,7 +133,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             volume: 100,
             playing: true,
             loop: false,
-            shuffle: false
+            shuffle: false,
+            warn: false
         };
         music.set(message.guild.id, queueConstruct);
         queueConstruct.songs.push(song);
