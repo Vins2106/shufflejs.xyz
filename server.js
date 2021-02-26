@@ -96,7 +96,9 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         url: `https://www.youtube.com/watch?v=${video.id}`,
         thumbnail: video.thumbnails.medium,
         duration: video.duration,
-        user: message.author
+        user: message.author,
+        guild: message.guild,
+        message
     };
     if (!serverQueue) {
         const queueConstruct = {
@@ -199,12 +201,24 @@ function play(guild, song) {
               return user.send(`Oops, only ${serverQueue.songs[0].user.tag} can use this react! >:c\n${m.url}`)
             }
             
+            let EnableOrDisable = serverQueue.shuffle ? true : false;
+            
+            let _enable;
+            
+            if (EnableOrDisable) _enable = false;
+            if (!EnableOrDisable) _enable = true;
+            
+            serverQueue.shuffle = _enable;
+            
+            serverQueue.textChannel.send(`Server option for shuffle has been turn **${serverQueue.shuffle ? "On" : "Off"}** ! c:`).then(m => m.delete({
+              timeout: 5000
+            }))            
+            
             break;
             
           case "🔁":
             
             reaction.users.remove(user);
-            
             
             
             
