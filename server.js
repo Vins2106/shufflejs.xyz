@@ -39,12 +39,29 @@ client.on("voiceStateUpdate", async (oldS, newS) => {
   if (music.get(newS.guild.id)) {
       if (client.guildConfig.get(`config.${newS.guild.id}.leaveOnEmpty`)) {
         setTimeout(function() {
+          let serverQueue = music.get(newS.guild.id);
+          serverQueue.voiceChannel.leave();
+          
+          
+          music.delete(newS.guild.id)
           
         }, 60000)
       }    
   }
   
 })
+
+client.on("guildCreate", async guild => {
+  client.guildConfig.set(`config.${guild.id}`, {
+    leaveOnEmpty: true
+  })
+});
+
+client.on("guildDelete", async guild => {
+  if (client.guildConfig.get(`config.${guild.id}`)) {
+    client.guildConfig.delete(`config.${guild.id}`);
+  }
+});
 
 client.on("message", async message => {
   
