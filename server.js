@@ -75,11 +75,12 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         queueConstruct.songs.push(song);
 
         try {
-            var connection = await voiceChannel.join({
-              
-            });
+            var connection = await voiceChannel.join()
             queueConstruct.connection = connection;
             play(message.guild, queueConstruct.songs[0]);
+            
+          connection.voice.setSelfDeaf(true); 
+          
         } catch (error) {
             console.error(`[ERROR] I could not join the voice channel, because: ${error}`);
             music.delete(message.guild.id);
@@ -117,7 +118,7 @@ function play(guild, song) {
         .on("error", error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
 
-    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}**- ${song.duration}`).setImage(song.thumbnail.url)).then(m => {
+    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}**- ${song.duration.hours} : ${song.duration.minutes}`).setImage(song.thumbnail.url)).then(m => {
       
       m.react("🗑️");
       
@@ -129,7 +130,7 @@ function play(guild, song) {
         switch(reaction.emoji.name) {
           case "🗑️": 
             
-            m.delete();
+            m.delete()
             
             break;
         }
