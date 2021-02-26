@@ -169,8 +169,11 @@ function play(guild, song) {
       m.react("🔀");
       m.react("🔁");
       m.react("▶️");
-      m.react("⏭️")
+      m.react("⏭️");
       m.react("⏯️");
+      m.react("🔈");
+      m.react("🔉");
+      m.react("🔊");
       m.react("🗑️");
       
       const filter = (reaction, user) => user.id !== client.user.id;
@@ -187,7 +190,22 @@ function play(guild, song) {
             
             break;
             
+         
+          case "🔀": 
             
+            reaction.users.remove(user);
+            
+            if (user.id !== serverQueue.songs[0].user.id) {
+              return user.send(`Oops, you do not have permission to react this message! >:c\n${m.url}`)
+            }
+            
+            let EnableOrDisable = serverQueue.shuffle ? true : false;
+            
+            serverQueue.shuffle = EnableOrDisable;
+            
+            serverQueue.textChannel.send(`Loop now **${serverQueue.shuffle ? "On" : "Off"}** 🎉`)
+            
+            break;
         }
         
       })
