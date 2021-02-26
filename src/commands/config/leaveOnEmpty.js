@@ -7,10 +7,12 @@ exports.run = async (message, client, args, config) => {
     return message.channel.send(`The leaveOnEmpty plugin for this server is **${client.guildConfig.get(`config.${message.guild.id}.leaveOnEmpty`) ? "Enable" : "Disable"}**`)
   }
   
+  let loe = client.guildConfig.get(`config.${message.guild.id}.leaveOnEmpty`);
+  
   if (query === "enable" || query === "on" || query === "true") {
-    
+    if (loe) return message.channel.send("leaveOnEmpty already turn on! >:c")
   } else if (query === "disable" || query === "off" || query === "false") {
-    
+    if (!loe) return message.channel.send("leaveOnEmpty already turn off! >:|")
   } else {
     return message.channel.send(`**>:c
 enable:
