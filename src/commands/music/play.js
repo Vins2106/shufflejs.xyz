@@ -11,7 +11,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
             }
           
           const playing = new client.embed()
-          .setAuthor("Now playing")
+          .setAuthor("New song has been added to queue!")
           .setColor(config.color)
           .setDescription(`Succesfully added ${playlist.title}!`)
           

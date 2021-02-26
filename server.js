@@ -166,6 +166,11 @@ function play(guild, song) {
 
     serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {
       
+      m.react("🔀");
+      m.react("🔁");
+      m.react("▶️");
+      m.react("⏭️")
+      m.react("⏯️");
       m.react("🗑️");
       
       const filter = (reaction, user) => user.id !== client.user.id;
