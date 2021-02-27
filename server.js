@@ -298,7 +298,13 @@ function play(message, song) {
             
             if (!canModify(member)) return message.member.send(`You cannot use this react!\n${m.url}`)
             
-            if (serverQueue.volume)
+            if (serverQueue.volume == 100) {
+              serverQueue.connection.dispatcher.setVolume(0 / 100);
+            } else if (serverQueue.volume == 0) {
+              serverQueue.connection.dispatcher.setVolume(100 / 100);
+            } else {
+              serverQueue.connection.dispatcher.setVolume(0 / 100);
+            }
             
             break;
         }
