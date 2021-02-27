@@ -1,5 +1,3 @@
-const ytdl = require("ytdl-core");
-
 exports.run = async (message, client, args, music, config, handleVideo, play, youtube, url) => {
 
   if (!message.member.voice.channel) return message.channel.send("Please join a voice channel first ! >:c");
@@ -23,14 +21,15 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
                 var video = await youtube.getVideo(url);
             } catch (error) {
                 try {
-                    var video = await ytdl.getInfo(args.join(" ").replace(/<(.+)>/g, '$1'));
+                    var videos = await youtube.searchVideos(args.join(" "), 10);
+                    var video = await youtube.getVideoByID(videos[0].id);
                     if (!video) return message.channel.send("Im unable to find videos with this query, try again")
                 } catch (err) {
                     console.error(err);
                     return message.channel.send("Im unable to find videos with this query")
                 }
             }
-            handleVideo(video, message, message.member.voice.channel);
+            const a = handleVideo(video, message, message.member.voice.channel);
         }  
   
 }
