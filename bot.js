@@ -11,7 +11,7 @@ const ytdl = require("ytdl-core");
 const api = config.yt_api;
 const youtube = new YouTube(api);
 const music = new Map();
-const Util = require("discord.js")
+const { Util } = require("discord.js")
 const fs = require("fs");
 
 client.embed = Discord.MessageEmbed;
