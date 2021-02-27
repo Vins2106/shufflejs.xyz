@@ -179,7 +179,7 @@ function play(message, song) {
             serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c")
           }
         }) 
-        .on("error", error => message.channel.send(`Hmm, looks like this is not music video, `));
+        .on("error", error => message.channel.send(`Hmm, looks like this is not music video, **404**\n${error}`));
     dispatcher.setVolume(serverQueue.volume / 100);
 
     serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {

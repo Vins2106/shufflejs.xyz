@@ -19,6 +19,7 @@
     "fs": "^0.0.2",
     "dotenv": "^8.2.0",
     "@discordjs/opus": "^0.3.3",
-    "quick.db": "^7.1.2"
+    "quick.db": "^7.1.2",
+    "ffmpeg": "^0.0.4"
   }
 }
