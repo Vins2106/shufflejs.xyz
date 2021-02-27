@@ -266,6 +266,24 @@ function play(message, song) {
             if (!serverQueue.songs[0]) return serverQueue.connection.dispatcher.end();
             
             break;
+            
+          case "⏯️":
+            
+            reaction.users.remove(user);
+            
+            if (!canModify(member)) return message.member.send(`You cannot use this react!\n${m.url}`);
+            
+            let playing = serverQueue.playing ? true : false;
+            
+            if (!playing) {
+              serverQueue.playing = true;
+              serverQueue.connection.dispatcher.pause();
+            }
+            if (playing) serverQueue.playing = false;
+            
+            
+            
+            break;
         }
         
       })
