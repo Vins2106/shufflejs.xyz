@@ -29,7 +29,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
                     return message.channel.send("Im unable to find videos with this query")
                 }
             }
-            const a = handleVideo(video, message, message.member.voice.channel);
+            handleVideo(video, message, message.member.voice.channel);
         }  
   
 }
