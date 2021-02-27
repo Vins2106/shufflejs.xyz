@@ -154,11 +154,11 @@ function play(message, song) {
           timeout: 5000
         }))
       
-        return music.delete(guild.id);
+        return console.log(`${serverQueue.songs.map(x => x)}`)
     }
 
-    const dispatcher = serverQueue.connection.play(ytdl(song.url), {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
-        .on("finish", () => {
+    const dispatcher = serverQueue.connection.play(ytdl(song.url), { highWaterMark: 1 >> 25 }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
+        .on("finish", () => { 
           try {
             const shiffed = serverQueue.songs.shift();
             if (serverQueue.loop === true) {
@@ -176,10 +176,10 @@ function play(message, song) {
             return play(message, serverQueue.songs[0]);
             }
           } catch (e) {
-            serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c")
+            serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c\n" + e)
           }
         }) 
-        .on("error", error => console.log(`${error}`));
+        .on("error", error => message.channel.send(`Hmm, looks like this is not music video, **404**\n${error}`));
     dispatcher.setVolume(serverQueue.volume / 100);
 
     serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {
