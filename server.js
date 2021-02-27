@@ -277,11 +277,28 @@ function play(message, song) {
             
             if (!playing) {
               serverQueue.playing = true;
+              serverQueue.connection.dispatcher.resume();
+            }
+            if (playing) {
+              serverQueue.playing = false;
               serverQueue.connection.dispatcher.pause();
             }
-            if (playing) serverQueue.playing = false;
             
+            return serverQueue.textChannel.send(`Succesfully **${serverQueue.playing ? "Resume" : "Pause"}** **${serverQueue.songs[0].title}** - <@${serverQueue.songs[0].user.id}>`).then(m2 => {
+              m2.delete({
+                timeout: 5000
+              })
+            })
             
+            break;
+            
+          case "🔈":
+            
+            reaction.users.remove(user);
+            
+            if (!canModify(member)) return message.member.send(`You cannot use this react!\n${m.url}`)
+            
+            if (serverQueue.volume)
             
             break;
         }
