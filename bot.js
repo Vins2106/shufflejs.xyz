@@ -159,19 +159,27 @@ function play(message, song) {
 
     const dispatcher = serverQueue.connection.play(ytdl(song.url))
         .on("finish", () => {
+          try {
             const shiffed = serverQueue.songs.shift();
             if (serverQueue.loop === true) {
                 serverQueue.songs.push(shiffed);
             };
+            if (serverQueue.songs[1]) {
           if (serverQueue.shuffle) {
             let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
             if (!random) return;
             
             return play(message, random)
+          }              
+            return play(message, serverQueue.songs[0]);            
+            } else {
+            return play(message, serverQueue.songs[0]);
+            }
+          } catch (e) {
+            serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c")
           }
-            play(message, serverQueue.songs[0]);
         }) 
-        .on("error", error => console.error(`Oh no! ${error}`));
+        .on("error", error => message.channel.send(`Hmm, looks like this is not music video, `));
     dispatcher.setVolume(serverQueue.volume / 100);
 
     serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {
@@ -202,6 +210,7 @@ function play(message, song) {
             
             m.delete()
              
+            
             break;
             
           
@@ -338,6 +347,19 @@ function play(message, song) {
             break;
             
           case "🔊": 
+         
+            reaction.users.remove(user);
+            
+            if (serverQueue.volume == 100) return;
+            if (serverQueue.volume + 10 >= 100) serverQueue.volume = 100; else serverQueue.volume = serverQueue.volume + 10;
+            
+            serverQueue.connection.dispatcher.setVolume(serverQueue.volume / 100);
+            
+            message.channel.send(`The volume now on **${serverQueue.volume}%**`).then(m2 => {
+              m2.delete({
+                timeout: 5000
+              })
+            })            
             
             break;
         }
