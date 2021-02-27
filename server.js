@@ -168,7 +168,7 @@ function play(message, song) {
             return play(message, random)
           }
             play(message, serverQueue.songs[0]);
-        })
+        }) 
         .on("error", error => console.error(`Oh no! ${error}`));
     dispatcher.setVolume(serverQueue.volume / 100);
 
@@ -300,18 +300,21 @@ function play(message, song) {
             
             let mute = false;
             
-            if (serverQueue.volume == 100) {
-              mute = true;
-              serverQueue.connection.dispatcher.setVolume(0 / 100);
-            } else if (serverQueue.volume == 0) {
+            if (serverQueue.volume <= 0) {
+              serverQueue.volume = 100;
               mute = false;
-              serverQueue.connection.dispatcher.setVolume(100 / 100);
+              serverQueue.connection.dispatcher.setVolume(100 / 100)
             } else {
+              serverQueue.volume = 0;
               mute = true;
-              serverQueue.connection.dispatcher.setVolume(0 / 100);
+              serverQueue.connection.dispatcher.setVolume(0);
             }
             
-            
+            return serverQueue.textChannel.send(`Succesfully **${mute ? "Mute" : "Unmute"}** **${serverQueue.songs[0].title}** - <@${serverQueue.songs[0].user.id}>`).then(m2 => {
+              m2.delete({
+                timeout: 5000
+              })
+            })
             
             break;
         }
