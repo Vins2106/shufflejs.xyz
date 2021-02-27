@@ -29,6 +29,8 @@ require("./src/module.js")(client, fs)
 // events
 
 client.on("ready", () => {
+  client.user.setActivity("Maroon 5 - Girls Like You ft. Cardi B (Official Music Video)", {type: "PLAYING"})
+  
   console.log(`Login as ${client.user.username}`)
 });
 
@@ -315,6 +317,27 @@ function play(message, song) {
                 timeout: 5000
               })
             })
+            
+            break;
+            
+          case "🔉":
+            
+            reaction.users.remove(user);
+            
+            if (serverQueue.volume == 0) return;
+            if (serverQueue.volume - 10 <= 0) serverQueue.volume = 0; else serverQueue.volume = serverQueue.volume - 10;
+            
+            serverQueue.connection.dispatcher.setVolume(serverQueue.volume / 100);
+            
+            message.channel.send(`The volume now on **${serverQueue.volume}%**`).then(m2 => {
+              m2.delete({
+                timeout: 5000
+              })
+            })
+            
+            break;
+            
+          case "🔊": 
             
             break;
         }
