@@ -169,7 +169,7 @@ function play(message, song) {
           }
             let playMusic = play(message, serverQueue.songs[0]);
         })
-        .on("error", error => console.error(error));
+        .on("error", error => console.error(`Oh no! ${error}`));
     dispatcher.setVolume(serverQueue.volume / 100);
 
     serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {
@@ -310,7 +310,7 @@ function play(message, song) {
         }
         
       })
-      
+   
       
     })
-}
+} 
