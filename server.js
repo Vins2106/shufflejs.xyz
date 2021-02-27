@@ -167,7 +167,7 @@ function play(message, song) {
             
             return play(message, random)
           }
-            let playMusic = play(message, serverQueue.songs[0]);
+            play(message, serverQueue.songs[0]);
         })
         .on("error", error => console.error(`Oh no! ${error}`));
     dispatcher.setVolume(serverQueue.volume / 100);
