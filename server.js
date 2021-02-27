@@ -239,7 +239,11 @@ function play(message, song) {
             
             serverQueue.loop = _loop;
             
-            serverQueue.textChannel.send(`Server option for loop has been turn **${serverQueue.loop ? "On" : "Off"}** ! \:D`).th
+            serverQueue.textChannel.send(`Server option for loop has been turn **${serverQueue.loop ? "On" : "Off"}** ! \:D`).then(m2 => {
+              m2.delete({
+                timeout: 5000
+              })
+            })
             
             break;
             
