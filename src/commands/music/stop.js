@@ -91,7 +91,10 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   } else {
     
     queue.songs = [];
-    queue.stopped = true;
+    
+    if (queue.autoplay) {
+      queue.stopped = true;
+    }
     
     queue.connection.dispatcher.end();
     

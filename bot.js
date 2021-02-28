@@ -74,6 +74,8 @@ client.on("guildDelete", async guild => {
 
 client.on("message", async message => {
   
+  if (!message.content.startsWith(prefix)) return;
+  
   const args = message.content.toLowerCase().slice(prefix.length).trim().split(/ +/g);
   let cmd = args.shift();
   
