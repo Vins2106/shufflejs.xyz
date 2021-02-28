@@ -243,7 +243,7 @@ async function play(message, song) {
                   thumbnail: video.thumbnails.medium,
                   duration: video.duration,
                   formatDuration: video.durationSeconds,
-                  user: message.author,
+                  user: client.user,
                   guild: message.guild,
                   message                
               }
