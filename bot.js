@@ -100,6 +100,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         url: `https://www.youtube.com/watch?v=${video.id}`,
         thumbnail: video.thumbnails.medium,
         duration: video.duration,
+        formatDuration: video.durationSeconds,
         user: message.author,
         guild: message.guild,
         message
@@ -196,7 +197,7 @@ function play(message, song) {
       m.react("🗑️");
       
       const filter = (reaction, user) => user.id !== client.user.id;
-      var collector = m.createReactionCollector(filter)
+      var collector = m.createReactionCollector(filter, {time: song.formatDuration})
       
       collector.on("collect", async (reaction, user) => {
         const member = message.guild.member(user)
@@ -368,6 +369,9 @@ function play(message, song) {
         
       })
    
+      collector.on("end", async collector => {
+        m.delete()
+      })
       
     })
 } 
