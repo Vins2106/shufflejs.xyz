@@ -8,9 +8,18 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   if (message.member.voice.channel.id !== queue.voiceChannel.id) return message.channel.send(`Bro, you must join **${queue.voiceChannel.name}** >:c`)
   
+  let _withoutBots = 0;
   
-  if (queue.voiceChannel.members.size - 1 > 1) {
-  let _vote = queue.voiceChannel.members.size - 1
+    queue.voiceChannel.members.map(x => {
+      if (x.user.bot) return;
+      _withoutBots = _withoutBots + 1
+    })
+  
+  
+  if (_withoutBots > 1) {
+  
+    
+  let _vote = _withoutBots - 1
   let _votes = 0;
   let _deleted = false;
   let _url;
@@ -81,9 +90,15 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     })
   } else {
     
+    queue.songs = [];
+    
     queue.connection.dispatcher.end();
     
-    message
+    message.channel.send(`Stopped music!`).then(m2 => {
+      m2.delete({
+        timeout: 5000
+      })
+    })
     
   }
   
