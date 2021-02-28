@@ -197,7 +197,12 @@ function play(message, song) {
       m.react("🗑️");
       
       const filter = (reaction, user) => user.id !== client.user.id;
-      var collector = m.createReactionCollector(filter, {time: song.formatDuration})
+      let _time1 = song.duration.hours * 3600000;
+      let _time2 = song.duration.minutes * 60000;
+      let _time3 = song.duration.seconds * 1000;
+      let time = _time1 + _time2 + _time3;
+      
+      var collector = m.createReactionCollector(filter, {time: time})
       
       collector.on("collect", async (reaction, user) => {
         const member = message.guild.member(user)
