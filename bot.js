@@ -90,6 +90,47 @@ client.on("message", async message => {
 // events akhir
  
 // function
+async function handleQueue(message, voiceChannel, video, playlist = false) {
+  const queue = music.get(message.guild.id);
+  if (video.duration.minutes == 0) return message.channel.send(`Cannot play songs that are under 1 minute`);
+  
+  let songConfig =
+      {
+        id: video.id,
+        title: Util.escapeMarkdown(video.title),
+        thumbnail: video.thumbnails.medium,
+        duration: video.duration,
+        user: message.author,
+        guild: message.guild
+      }
+  
+  let queueConfig = 
+      {
+        textChannel: message.channel,
+        voiceChannel: voiceChannel,
+        connection: null,
+        songs: [],
+        volume: 100,
+        playing: true,
+        loop: false,
+        shuffle: false,
+        autoplay: true
+      }
+  
+  //
+  
+  if (!queue) {
+    let _connect = await voiceChannel.join().voice.setSelfDeaf(true);
+    
+    music.set(message.guild.id, queueConfig)
+  }
+  
+}
+
+async function playMusic(message, song) {
+  
+}
+
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
     if (video.duration.minutes == 0) return message.channel.send(`I can't play songs that are under 1 minute`)
@@ -118,7 +159,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             autoplay: false
         };
         music.set(message.guild.id, queueConstruct);
-        queueConstruct.songs.push(song);
+        music.get(message.guild.id).songs.push(song);
 
         try {
             var connection = await voiceChannel.join()
