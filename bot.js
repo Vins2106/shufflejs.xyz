@@ -161,7 +161,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             loop: false,
             shuffle: false,
             autoplay: false,
-            latestSong: song
+            latestSong: song,
+            stopped: false
         };
         music.set(message.guild.id, queueConstruct);
         music.get(message.guild.id).songs.push(song);
@@ -199,7 +200,6 @@ async function play(message, song) {
     const serverQueue = music.get(guild.id);
 
     if (!song) {
-      
         serverQueue.voiceChannel.leave();
         serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
           timeout: 5000
@@ -218,6 +218,14 @@ async function play(message, song) {
             
             // autoplay
             if (!serverQueue.songs[0]) {
+              if (serverQueue.stopped) {
+                serverQueue.songs = [];
+                serverQueue.voiceChannel.leave();
+                
+                return music.delete(message.guild.id)
+              }
+              
+//               auto play
         if (serverQueue.autoplay) {
           let _related = await ytdl.getInfo(serverQueue.latestSong.id);
           
@@ -238,10 +246,10 @@ async function play(message, song) {
                   message                
               }
           
-          serverQueue.latestSong = songConstructor;
+          serverQueue.songs.push(songConstructor)
           
           return play(message, songConstructor)
-        }
+        } else {
             if (serverQueue.songs[1]) {
           if (serverQueue.shuffle) {
             let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
@@ -257,8 +265,13 @@ async function play(message, song) {
             serverQueue.latestSong = serverQueue.songs[0];
             return play(message, serverQueue.songs[0]);
             }              
+          serverQueue.latestSong = serverQueue.songs[0];
+          return play(message, serverQueue.songs[0])
               
-            } else {             
+        }
+            } else {  
+              
+              // normal
             if (serverQueue.songs[1]) {
           if (serverQueue.shuffle) {
             let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
