@@ -114,7 +114,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             volume: 100,
             playing: true,
             loop: false,
-            shuffle: false
+            shuffle: false,
+            autoplay: false
         };
         music.set(message.guild.id, queueConstruct);
         queueConstruct.songs.push(song);
@@ -146,12 +147,18 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     return;
 }
 
-function play(message, song) {
+async function play(message, song) {
   const guild = message.guild;
   
     const serverQueue = music.get(guild.id);
 
     if (!song) {
+        if (serverQueue.autoplay) {
+          let _related = (await ytdl.getBasicInfo(song.url)).related_videos;
+          
+          return play(message, `https://www.youtube.com/watch?v=${_related[0].id}`)
+        }
+      
         serverQueue.voiceChannel.leave();
         serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
           timeout: 5000

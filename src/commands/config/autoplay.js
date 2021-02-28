@@ -20,7 +20,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
         
         reaction.users.remove(user);
         
-        let _enable = music.get(message.guild.id).shuffle ? true : false;
+        let _enable = music.get(message.guild.id).autoplay ? true : false;
         let _conf = _enable;
         
         
@@ -30,11 +30,11 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           _conf = true;
         }
         
-        music.get(message.guild.id).shuffle = _conf;
+        music.get(message.guild.id).autoplay = _conf;
         
         msg.delete();
         
-        return message.channel.send(`Autoplay has been turn **${music.get(message.guild.id).shuffle ? "on" : "off"}**!`);
+        return message.channel.send(`Autoplay has been turn **${music.get(message.guild.id).autoplay ? "on" : "off"}**!`);
         
         break;
         
