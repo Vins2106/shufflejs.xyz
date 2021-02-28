@@ -121,9 +121,12 @@ async function handleQueue(message, voiceChannel, video, playlist = false) {
   
   if (!queue) {
     let _connect = await voiceChannel.join().voice.setSelfDeaf(true);
-    _connect
+    queueConfig.connection = _connect;
+    queueConfig.songs.push(songConfig)
     
     music.set(message.guild.id, queueConfig)
+    
+    playMusic(message, queueConfig.songs[0].url)
   }
   
 }
@@ -200,7 +203,22 @@ async function play(message, song) {
           
           let related = _related.response.contents.twoColumnWatchNextResults.autoplay.autoplay.sets[0].autoplayVideo.watchEndpoint.videoId;
           
-          return play(message, `https://www.youtube.com/watch?v=${_related[0].id}`)
+          let video = await youtube.getVideoByID(related)
+          
+          let songConstructor =
+              {
+                  id: video.id,
+                  title: Util.escapeMarkdown(video.title),
+                  url: `https://www.youtube.com/watch?v=${video.id}`,
+                  thumbnail: video.thumbnails.medium,
+                  duration: video.duration,
+                  formatDuration: video.durationSeconds,
+                  user: message.author,
+                  guild: message.guild,
+                  message                
+              }
+          
+          return play(message, songConstructor)
         }
       
         serverQueue.voiceChannel.leave();
