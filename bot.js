@@ -154,7 +154,9 @@ async function play(message, song) {
 
     if (!song) {
         if (serverQueue.autoplay) {
-          let _related = (await ytdl.getBasicInfo(serverQueue.songs[0].url)).related_videos;
+          let _related = await ytdl.getInfo(serverQueue.songs[0].id);
+          
+          let related = _related.response.contents.twoColumnWatchNextResults.autoplay.autoplay.sets[0].autoplayVideo.watchEndpoint.videoId;
           
           return play(message, `https://www.youtube.com/watch?v=${_related[0].id}`)
         }
