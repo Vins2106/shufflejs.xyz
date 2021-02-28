@@ -65,6 +65,8 @@ async function createReactionMusic(m, song, message, client, serverQueue) {
               timeout: 5000
             }))
             
+            if (serverQueue.autoplay) return;
+            
             if (!serverQueue.songs[0]) return serverQueue.connection.dispatcher.end();
             
             break;
