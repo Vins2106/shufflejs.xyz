@@ -14,7 +14,7 @@ exports.run = async (message, client, args, music, config) => {
   .setAuthor(message.guild.name + " queue! c:", message.guild.iconURL())
   .setDescription(`Current: **${queue.songs[0].title}** - **${queue.songs[0].duration.hours}** : **${queue.songs[0].duration.minutes}** : **${queue.songs[0].duration.seconds}**
   
-  ${songs.map(song => `**[${++index}.]** - **${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).join("\n")}`)
+  ${songs.map(song => `**[${++index}.]** - **${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).join("\n\n")}`)
   .setImage(queue.songs[0].thumbnail.url)
   .setColor(config.embed)
   .setFooter(`This songs from 1 - 10 in queue`)

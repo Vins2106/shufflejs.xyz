@@ -92,6 +92,8 @@ client.on("message", async message => {
 // function
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
+    if (video.duration.minutes == 0) return message.channel.send(`I can't play songs that are under 1 minute`)
+  
     const song = {
         id: video.id,
         title: Util.escapeMarkdown(video.title),
