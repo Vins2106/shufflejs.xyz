@@ -22,7 +22,6 @@ async function createReactionMusic(m, song, message, client, serverQueue) {
             reaction.users.remove(user)
             
             m.delete()
-             
             
             break;
             
