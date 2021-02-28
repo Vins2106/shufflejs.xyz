@@ -121,6 +121,7 @@ async function handleQueue(message, voiceChannel, video, playlist = false) {
   
   if (!queue) {
     let _connect = await voiceChannel.join().voice.setSelfDeaf(true);
+    _connect
     
     music.set(message.guild.id, queueConfig)
   }
