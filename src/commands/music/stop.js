@@ -9,8 +9,8 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   if (message.member.voice.channel.id !== queue.voiceChannel.id) return message.channel.send(`Bro, you must join **${queue.voiceChannel.name}** >:c`)
   
   
-  if (queue.voiceChannel.members.size - 1 > 2) {
-  let _vote = Math.ceil(queue.voiceChannel.members.size - 1 / 2)
+  if (queue.voiceChannel.members.size - 1 > 1) {
+  let _vote = queue.voiceChannel.members.size - 1
   let _votes = 0;
   
     let m = await message.channel.send(`Timeout: **30s**\nWe need **${_vote}** votes to stop music\nreact with 📢`);
@@ -18,7 +18,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     m.react("📢");
     
     let filter = (reaction, user) => user.id !== client.user.id;
-    let collector = m.createReactionCollector(filter, {time: 30 * 1000});
+    let collector = m.createReactionCollector(filter, {dispose: true, time: 30 * 1000});
     
     collector.on("collect", (reaction, user) => {
       
@@ -30,7 +30,16 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           
           _votes = _votes + 1;
           
-          if (_votes > _vote)
+          if (_votes == _vote) {
+            
+            queue.songs = [];
+            queue.connection.dispatcher.end();
+            
+            message.channel.send(`Succesfully stop music!`)
+            
+            return m.edit(`Music has been stopped...`)
+            
+          }
           
           m.edit(`Someone voted, now on **${_votes}/${_vote}**, need **${_vote - _votes}** more!`)
           
