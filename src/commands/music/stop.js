@@ -12,7 +12,9 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   if (queue.voiceChannel.members.size - 1 > 1) {
   let _vote = queue.voiceChannel.members.size - 1
   let _votes = 0;
-  
+  let _deleted = false;
+  let _url;
+    
     let m = await message.channel.send(`Timeout: **30s**\nWe need **${_vote}** votes to stop music\nreact with 📢`);
     
     m.react("📢");
@@ -20,7 +22,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     let filter = (reaction, user) => user.id !== client.user.id;
     let collector = m.createReactionCollector(filter, {dispose: true, time: 30 * 1000});
     
-    collector.on("collect", (reaction, user) => {
+    collector.on("collect", async (reaction, user) => {
       
       switch (reaction.emoji.name) {
           
@@ -37,8 +39,11 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
             
             message.channel.send(`Succesfully stop music!`)
             
-            return m.edit(`Music has been stopped...`)
+            _deleted = true;
             
+            let m2 = await message.channel.send(`Music has been stopped...`)
+            
+            return _url = m2.url;
           }
           
           m.edit(`Someone voted, now on **${_votes}/${_vote}**, need **${_vote - _votes}** more!`)
@@ -67,9 +72,19 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     
     collector.on("end", (collect) => {
       
-      
+      if (_deleted) {
+        m.edit(`Succesfully stop music\n${_url}`)
+      } else {
+        m.edit(`Cancel to stop music`)
+      }
       
     })
+  } else {
+    
+    queue.connection.dispatcher.end();
+    
+    message
+    
   }
   
 }

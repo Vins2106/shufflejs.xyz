@@ -156,7 +156,7 @@ function play(message, song) {
           timeout: 5000
         }))
       
-        return console.log(`${serverQueue.songs.map(x => x)}`)
+        return music.delete(message.guild.id)
     }
 
     const dispatcher = serverQueue.connection.play(ytdl(song.url), { highWaterMark: 1 >> 25 }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
