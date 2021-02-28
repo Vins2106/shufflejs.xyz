@@ -2,6 +2,8 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
 
   if (!message.member.voice.channel) return message.channel.send("Please join a voice channel first ! >:c");
   
+  if (!args.join(" ")) return message.channel.send(`Please provide query!`)
+  
         if (url.match(/^https?:\/\/(www.youtube.com|youtube.com)\/playlist(.*)$/)) {
             const playlist = await youtube.getPlaylist(url);
             const videos = await playlist.getVideos();
