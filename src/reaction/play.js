@@ -59,13 +59,18 @@ async function createReactionMusic(m, song, message, client, serverQueue) {
               timeout: 5000
             }))
             
-             serverQueue.connection.dispatcher.end(); 
-            
             serverQueue.textChannel.send(`**${user.tag}** skip the song :>`).then(m2 => m2.delete({
               timeout: 5000
             }))
             
-            if (serverQueue.autoplay) return;
+             serverQueue.connection.dispatcher.end(); 
+            
+            
+            if (serverQueue.autoplay) {
+              
+              return serverQueue
+              
+            }
             
             if (!serverQueue.songs[0]) return serverQueue.connection.dispatcher.end();
             
