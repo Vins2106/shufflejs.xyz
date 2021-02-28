@@ -160,7 +160,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             playing: true,
             loop: false,
             shuffle: false,
-            autoplay: false
+            autoplay: false,
+            latestSong: song
         };
         music.set(message.guild.id, queueConstruct);
         music.get(message.guild.id).songs.push(song);
@@ -198,8 +199,27 @@ async function play(message, song) {
     const serverQueue = music.get(guild.id);
 
     if (!song) {
+      
+        serverQueue.voiceChannel.leave();
+        serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
+          timeout: 5000
+        }))
+      
+        return music.delete(message.guild.id)
+    }
+
+    const dispatcher = serverQueue.connection.play(ytdl(song.url), { highWaterMark: 1 >> 25 }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
+        .on("finish", async () => { 
+          try {
+            const shiffed = serverQueue.songs.shift();
+            if (serverQueue.loop === true) {
+                serverQueue.songs.push(shiffed);
+            };
+            
+            // autoplay
+            if (!serverQueue.songs[0]) {
         if (serverQueue.autoplay) {
-          let _related = await ytdl.getInfo(serverQueue.songs[0].id);
+          let _related = await ytdl.getInfo(serverQueue.latestSong.id);
           
           let related = _related.response.contents.twoColumnWatchNextResults.autoplay.autoplay.sets[0].autoplayVideo.watchEndpoint.videoId;
           
@@ -218,35 +238,44 @@ async function play(message, song) {
                   message                
               }
           
+          serverQueue.latestSong = songConstructor;
+          
           return play(message, songConstructor)
         }
-      
-        serverQueue.voiceChannel.leave();
-        serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
-          timeout: 5000
-        }))
-      
-        return music.delete(message.guild.id)
-    }
-
-    const dispatcher = serverQueue.connection.play(ytdl(song.url), { highWaterMark: 1 >> 25 }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
-        .on("finish", () => { 
-          try {
-            const shiffed = serverQueue.songs.shift();
-            if (serverQueue.loop === true) {
-                serverQueue.songs.push(shiffed);
-            };
             if (serverQueue.songs[1]) {
           if (serverQueue.shuffle) {
             let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
             if (!random) return;
             
+            serverQueue.latestSong = random;
+            
             return play(message, random)
-          }              
+          }
+            serverQueue.latestSong = serverQueue.songs[0];
             return play(message, serverQueue.songs[0]);            
             } else {
+            serverQueue.latestSong = serverQueue.songs[0];
+            return play(message, serverQueue.songs[0]);
+            }              
+              
+            } else {             
+            if (serverQueue.songs[1]) {
+          if (serverQueue.shuffle) {
+            let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
+            if (!random) return;
+            
+            serverQueue.latestSong = random;
+            return play(message, random)
+          }              
+            serverQueue.latestSong = serverQueue.songs[0];
+              
+            return play(message, serverQueue.songs[0]);            
+            } else {
+            serverQueue.latestSong = serverQueue.songs[0];
             return play(message, serverQueue.songs[0]);
             }
+            }
+            
           } catch (e) {
             serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c\n" + e)
           }
