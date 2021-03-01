@@ -19,7 +19,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   if (_withoutBots > 1) {
   
     
-  let _vote = _withoutBots - 1
+  let _vote = _withoutBots
   let _votes = 0;
   let _deleted = false;
   let _url;
