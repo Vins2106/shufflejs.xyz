@@ -11,7 +11,7 @@ module.exports = function (client) {
 
     
 //log that the module is loaded
-    console.log(` :: ⬜️ Module: ${description.name} | Loaded version ${description.version} from ("${description.filename}")`)
+    console.log(`Loaded join to create!`)
 //voice state update event to check joining/leaving channels
     client.on("voiceStateUpdate", (oldState, newState) => {
     let jfcID = jointocreatemap.get(`jfc.${newState.guild.id}`);
