@@ -54,6 +54,7 @@ module.exports = function (client) {
               //delete the voice channel
               jointocreatemap.delete(`chl.${oldState.guild.id}.${oldState.channelID}`);
               // delete user
+              jointocreatemap.delete(`jfc.${oldState.member.user.id}.voice`)
               jointocreatemap.set(`jfc.${oldState.member.user.id}.joined`, false)
               
               return vc.delete(); 
@@ -81,6 +82,7 @@ module.exports = function (client) {
         //delete the room
           jointocreatemap.delete(`chl.${oldState.guild.id}.${oldState.channelID}`);
         // delete user
+          jointocreatemap.delete(`jfc.${oldState.member.user.id}.voice`)
           jointocreatemap.set(`jfc.${oldState.member.user.id}.joined`, false)
           
           return vc.delete(); 
@@ -104,6 +106,7 @@ module.exports = function (client) {
         //set the new channel to the map
         jointocreatemap.set(`tempvoicechannel_${vc.guild.id}_${vc.id}`, vc.id);
         jointocreatemap.set(`jfc.${user.member.user.id}.joined`, true)
+        jointocreatemap.set(`jfc.${user.member.user.id}.voice`, vc);
         //change the permissions of the channel
         await vc.overwritePermissions([
           {
