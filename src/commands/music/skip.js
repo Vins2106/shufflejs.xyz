@@ -2,20 +2,16 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
 
   let queue = music.get(message.guild.id);
   
-  if (!message.member.voice.channel) return message.channel.send(`Uh! Please join voice channel bro... >:(`)
+  if (!queue) return message.channel.send(`This server do not play music \:(`)
   
-  if (!queue) return message.channel.send(`This server do not play music bro...`)
+  if (!message.member.voice.channel) return message.channel.send(`Hey, please join voice channel!`)
   
   if (message.member.voice.channel.id !== queue.voiceChannel.id) return message.channel.send(`Bro, you must join **${queue.voiceChannel.name}** >:c`)
   
   if (message.member.hasPermission("ADMINISTRATOR")) {
-    queue.songs = [];
-    queue.stopped = true;
     queue.connection.dispatcher.end();
     
-    message.channel.send(`**${message.author.tag}** have **Administrator** permission, so he do not need to vote, stopped by admin!`)
-    
-    return queue.voiceChannel.leave();
+    return message.channel.send(`**${message.author.tag}** have **Administrator** permission, so he do not need to vote, skipped by admin!`)
   }
   
   let _withoutBots = 0;
@@ -34,7 +30,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   let _deleted = false;
   let _url;
     
-    let m = await message.channel.send(`Timeout: **30s**\nWe need **${_vote}** votes to stop music\nreact with 📢`);
+    let m = await message.channel.send(`Timeout: **30s**\nWe need **${_vote}** votes to skip music\nreact with 📢`);
     
     m.react("📢");
     
@@ -52,14 +48,11 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           _votes = _votes + 1;
           
           if (_votes == _vote) {
-            
-            queue.songs = [];
-            queue.stopped = true;
             queue.connection.dispatcher.end();
             
             _deleted = true;
             
-            let m2 = await message.channel.send(`Music has been stopped...`)
+            let m2 = await message.channel.send(`Succesfully to skip music :D`)
             
             return _url = m2.url;
           }
@@ -91,9 +84,9 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     collector.on("end", (collect) => {
       
       if (_deleted) {
-        m.edit(`Succesfully stop music\n${_url}`)
+        m.edit(`Succesfully skip music\n${_url}`)
       } else {
-        m.edit(`Cancel to stop music`)
+        m.edit(`Cancel to skip music`)
       }
       
     })
@@ -113,13 +106,12 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
       })
     })
     
-  }
-  
+  }  
 }
 
 exports.config = {
-  name: "stop",
-  description: "Stop server songs with voting system!",
-  aliases: ["stop-music", "stop-song"],
+  name: "",
+  description: "",
+  aliases: [],
   cooldown: 10
 }

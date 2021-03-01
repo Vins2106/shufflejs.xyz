@@ -54,7 +54,7 @@ async function createReactionMusic(m, song, message, client, serverQueue) {
             
             if (!canModify(member)) return message.member.send(`You cannot use this react!\n${m.url}`)
             
-            if (user.id !== serverQueue.songs[0].user.id) return message.channel.send(`Oops **${user.tag}**, you cant use this react! if want to skip music, use **${config.prefix}vote-skip** command \:D`).then(m2 => m2.delete({
+            if (user.id !== serverQueue.songs[0].user.id) return message.channel.send(`Oops **${user.tag}**, you cant use this react! if want to skip music, use **${config.prefix}skip** command \:D`).then(m2 => m2.delete({
               timeout: 5000
             }))
             
@@ -67,7 +67,7 @@ async function createReactionMusic(m, song, message, client, serverQueue) {
             
             if (serverQueue.autoplay) {
               
-              return serverQueue
+              return;
               
             }
             
