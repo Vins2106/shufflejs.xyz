@@ -4,21 +4,31 @@ const db = require("quick.db");
 exports.run = async (message, client, args, music, config, handleVideo, play, youtube, url) => {
   
   let queue = music.get(message.guild.id);
-  let lastNpMsg = db.get(`lastnpmsg.${message.guild.id}`);
-  if (lastNpMsg) {
-    let msg = await client.message
-  }
   
   if (!queue) return message.channel.send(`This server do not play music, play first! **${config.prefix}play [song]**`)
   
   let song = queue.songs[0];
   
   const npE = new MessageEmbed()
-  .setAuthor(`Now playing - ${song.user.username}`)
+  .setAuthor(`Playing music by - ${song.user.username}`)
   .setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`)
-  .setImage(song.thumbnail)
+  .setImage(song.thumbnail.url)
   .setColor(config.embed)
   .setFooter(`${song.url}`)
+  
+  const msg = await message.channel.send(npE);
+  
+      msg.react("🔁");
+      msg.react("⏭️");
+      msg.react("⏯️");
+      msg.react("🔈");
+      msg.react("🔉");
+      msg.react("🔊");
+      msg.react("🗑️");
+      
+      const { createReactionMusic } = require("../../reaction/play.js");
+      
+      createReactionMusic(msg, song, message, client, queue);
   
 }
 
