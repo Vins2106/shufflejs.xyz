@@ -38,6 +38,9 @@ let prefix = config.prefix;
 
 client.on("voiceStateUpdate", async (oldS, newS) => {
   
+  let _loe = client.guildConfig.get(`config.${oldS.guild.id}.leaveOnEmpty`);
+  
+  if (_loe) {
   if (music.get(oldS.guild.id)) {
     if (music.get(oldS.guild.id).voiceChannel.id == oldS.channelID) {
       try {
@@ -56,6 +59,9 @@ client.on("voiceStateUpdate", async (oldS, newS) => {
         console.log(`oh no ${e}`)
       }
     }
+  }    
+  } else if (!_loe) {
+    return;
   }
   
 })
