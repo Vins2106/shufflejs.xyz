@@ -30,7 +30,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           _conf = true;
         }
         
-        music.get(message.guild.id).autoplay = _conf;
+        require("")
         
         msg.delete();
         

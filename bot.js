@@ -90,52 +90,6 @@ client.on("message", async message => {
 })
 
 // events akhir
- 
-// function
-async function handleQueue(message, voiceChannel, video, playlist = false) {
-  const queue = music.get(message.guild.id);
-  if (video.duration.minutes == 0) return message.channel.send(`Cannot play songs that are under 1 minute`);
-  
-  let songConfig =
-      {
-        id: video.id,
-        title: Util.escapeMarkdown(video.title),
-        thumbnail: video.thumbnails.medium,
-        duration: video.duration,
-        user: message.author,
-        guild: message.guild
-      }
-  
-  let queueConfig = 
-      {
-        textChannel: message.channel,
-        voiceChannel: voiceChannel,
-        connection: null,
-        songs: [],
-        volume: 100,
-        playing: true,
-        loop: false,
-        shuffle: false,
-        autoplay: true
-      }
-  
-  //
-  
-  if (!queue) {
-    let _connect = await voiceChannel.join().voice.setSelfDeaf(true);
-    queueConfig.connection = _connect;
-    queueConfig.songs.push(songConfig)
-    
-    music.set(message.guild.id, queueConfig)
-    
-    playMusic(message, queueConfig.songs[0].url)
-  }
-  
-}
-
-async function playMusic(message, song) {
-  
-}
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
@@ -153,6 +107,13 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         message
     };
     if (!serverQueue) {
+      let _autoplay = await require('quick.db').get(`autoplay.${message.guild.id}`);
+      if (!_autoplay) {
+        _autoplay = true;
+        require("quick.db").set(`autoplay.${message.guild.id}`, true)
+      }
+      if (!_autoplay === "true" || !_autoplay === "false") _autoplay = true;
+      
         const queueConstruct = {
             textChannel: message.channel,
             voiceChannel: voiceChannel,
@@ -162,7 +123,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             playing: true,
             loop: false,
             shuffle: false,
-            autoplay: false,
+            autoplay: _autoplay,
             latestSong: song,
             stopped: false
         };
