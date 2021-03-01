@@ -32,10 +32,13 @@ client.on("ready", () => {
   client.user.setActivity("Maroon 5 - Girls Like You ft. Cardi B (Official Music Video)", {type: "PLAYING"})
   
   console.log(`Login as ${client.user.username}`)
+  
+  let joinforcreate = require("./src/jfc/joinforcreate.js");
+  joinforcreate(client)
 });
 
 let prefix = config.prefix;
-
+ 
 client.on("voiceStateUpdate", async (oldS, newS) => {
   
   let _loe = client.guildConfig.get(`config.${oldS.guild.id}.leaveOnEmpty`);

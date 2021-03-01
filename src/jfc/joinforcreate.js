@@ -1,8 +1,6 @@
   
 const config = require("../../config.js");
 const jointocreatemap = require("quick.db");
-let oldChannelName;
-let newChannelName;
 module.exports = function (client) {
     const description = {
         name: "jointocreate",
@@ -16,6 +14,9 @@ module.exports = function (client) {
     console.log(` :: ⬜️ Module: ${description.name} | Loaded version ${description.version} from ("${description.filename}")`)
 //voice state update event to check joining/leaving channels
     client.on("voiceStateUpdate", (oldState, newState) => {
+    let jfcID = jointocreatemap.get(`jfc.${newState.guild.id}`);
+    if (!jfcID) return;
+      
   new Promise(resolve => {
       resolve(2);
         try{
@@ -37,7 +38,7 @@ module.exports = function (client) {
   })
   // JOINED V12
   if (!oldState.channelID && newState.channelID) {
-    if(newState.channelID !== 812334411227725854) return;  //if its not the jointocreatechannel skip
+    if(newState.channelID !== jfcID) return;  //if its not the jointocreatechannel skip
     jointocreatechannel(newState);   //load the function
   }
   // LEFT V12
@@ -50,8 +51,6 @@ module.exports = function (client) {
             if (vc.members.size < 1) { 
               //delete it from the map
               jointocreatemap.delete(`tempvoicechannel_${oldState.guild.id}_${oldState.channelID}`); 
-              //log that it is deleted
-              console.log(" :: " + oldState.member.user.username + "#" + oldState.member.user.discriminator + " :: Room wurde gelöscht")
               //delete the voice channel
               return vc.delete(); 
           }
@@ -64,7 +63,7 @@ module.exports = function (client) {
   
     if (oldState.channelID !== newState.channelID) {
       //if its the join to create channel
-      if(newState.channelID===812334411227725854) 
+      if(newState.channelID=== jfcID) 
       //make a new channel
       jointocreatechannel(oldState);  
       //BUT if its also a channel ín the map (temp voice channel)
@@ -75,8 +74,6 @@ module.exports = function (client) {
         if (vc.members.size < 1) { 
           //delete it from the map
           jointocreatemap.delete(`tempvoicechannel_${oldState.guild.id}_${oldState.channelID}`); 
-         //log it 
-          console.log(" :: " + oldState.member.user.username + "#" + oldState.member.user.discriminator + " :: Room wurde gelöscht")
         //delete the room
           return vc.delete(); 
       }
@@ -87,10 +84,10 @@ module.exports = function (client) {
 }
   })
     async function jointocreatechannel(user) {
-      //log it 
-      console.log(" :: " + user.member.user.username + "#" + user.member.user.discriminator + " :: Created a Room")
-      //user.member.user.send("This can be used to message the member that a new room was created")
-      await user.guild.channels.create(`${user.member.user.username}'s Room`, {
+      let userChlName = jointocreatemap.get(`jfc.${user.id}.name`);
+      if (!userChlName) userChlName = `🔊 - ${user.member.user.username} Voice`
+      
+      await user.guild.channels.create(userChlName, {
         type: 'voice',
         parent: user.channel.parent.id, //or set it as a category id
       }).then(async vc => {
