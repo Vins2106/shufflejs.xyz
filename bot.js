@@ -107,12 +107,6 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         message
     };
     if (!serverQueue) {
-      let _autoplay = await require('quick.db').get(`autoplay.${message.guild.id}`);
-      if (!_autoplay) {
-        _autoplay = true;
-        require("quick.db").set(`autoplay.${message.guild.id}`, true)
-      }
-      if (!_autoplay === "true" || !_autoplay === "false") _autoplay = true;
       
         const queueConstruct = {
             textChannel: message.channel,
@@ -123,7 +117,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             playing: true,
             loop: false,
             shuffle: false,
-            autoplay: _autoplay,
+            autoplay: true,
             latestSong: song,
             stopped: false
         };
