@@ -11,7 +11,7 @@
   },
   "author:": "Vins 2106",
   "dependencies": {
-    "discord.js": "^12.5.1", 
+    "discord.js": "^12.5.1",
     "ytdl": "^1.4.1",
     "ytdl-core": "^4.4.5",
     "simple-youtube-api": "^5.2.1",
@@ -21,6 +21,8 @@
     "@discordjs/opus": "^0.3.3",
     "quick.db": "^7.1.2",
     "ffmpeg": "^0.0.4",
-    "ffmpeg-binaries": "^4.0.0"
+    "ffmpeg-binaries": "^4.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
   }
 }
