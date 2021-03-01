@@ -259,7 +259,7 @@ async function play(message, song) {
         .on("error", error => message.channel.send(`Hmm, looks like this is not music video, **404**\n${error}`));
     dispatcher.setVolume(serverQueue.volume / 100);
 
-    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor("Now playing").setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {
+    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor(`Now playing - ${song.user.username}`).setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {
       
       m.react("🔁");
       m.react("⏭️");

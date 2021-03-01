@@ -8,6 +8,16 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   if (message.member.voice.channel.id !== queue.voiceChannel.id) return message.channel.send(`Bro, you must join **${queue.voiceChannel.name}** >:c`)
   
+  if (message.member.hasPermission("ADMINISTRATOR")) {
+    queue.songs = [];
+    queue.stopped = true;
+    queue.connection.dispatcher.end();
+    
+    message.channel.send(`**${message.author.tag}** have **Administrator** permission, so he do not need to vote, stopped by admin!`)
+    
+    return queue.voiceChannel.leave();
+  }
+  
   let _withoutBots = 0;
   
     queue.voiceChannel.members.map(x => {
@@ -44,6 +54,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           if (_votes == _vote) {
             
             queue.songs = [];
+            queue.stopped = true;
             queue.connection.dispatcher.end();
             
             message.channel.send(`Succesfully stop music!`)
