@@ -110,8 +110,8 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
 }
 
 exports.config = {
-  name: "",
-  description: "",
-  aliases: [],
+  name: "skip",
+  description: "Skip the current music with voting system!",
+  aliases: ["skip-song"],
   cooldown: 10
 }
