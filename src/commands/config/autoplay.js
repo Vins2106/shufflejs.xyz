@@ -22,28 +22,33 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
         reaction.users.remove(user);
         
         let enable = db.get(`autoplay.${message.guild.id}`);
-        if (!enable) {
-          enable = true;
-          db.set(`autoplay.${message.guild.id}`, true)
-        }
+        let _enable;
         
-        let _enable = enable ? true : false;
+        if (!enable) {
+          _enable = true;
+          db.set(`autoplay.${message.guild.id}`, true)
+        } else {
+        let _en = enable ? true : false;
+        _enable = _en
+        }
         
         let _conf;
         
         
         
         if (_enable) {
-          _conf = false;
+        db.set(`autoplay.${message.guild.id}`, false)
+        _conf = false;
+        msg.delete();
+        return message.channel.send(`Autoplay has been turn **off**!`);
         } else if (!_enable) {
-          _conf = true;
+        db.set(`autoplay.${message.guild.id}`, true);
+        _conf = true;
+        msg.delete();
+        return message.channel.send(`Autoplay has been turn **on**!`);
         }
         
-        db.set(`autoplay.${message.guild.id}`, _conf)
         
-        msg.delete();
-        
-        return message.channel.send(`Autoplay has been turn **${db.get(`autoplay.${message.guild.id}`) ? "on" : "off"}**!`);
         
         break;
         

@@ -179,6 +179,10 @@ async function play(message, song) {
                 serverQueue.songs.push(shiffed);
             };
             
+          if (serverQueue.latestSong) {
+          serverQueue.latestSong = serverQueue.songs[0];
+          return play(message, serverQueue.songs[0])            
+          }
             // autoplay
             if (!serverQueue.songs[0]) {
               if (serverQueue.stopped) {
@@ -190,6 +194,7 @@ async function play(message, song) {
               
 //               auto play
         if (serverQueue.autoplay) {
+          
           let _related = await ytdl.getInfo(serverQueue.latestSong.id);
           
           let related = _related.response.contents.twoColumnWatchNextResults.autoplay.autoplay.sets[0].autoplayVideo.watchEndpoint.videoId;
