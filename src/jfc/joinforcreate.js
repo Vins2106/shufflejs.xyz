@@ -111,6 +111,8 @@ module.exports = function (client) {
             let finalTime = `**${mins}:${secs}**`;
             let findUser1 = await client.users.fetch(user.member.user.id);
           
+            user.member.voice.kick()
+          
             return client.users.cache.get(findUser1.id).send(`You are too fast to create a voice channel, please wait for ${finalTime}\n\nspam protection`);
           
         } else { 
