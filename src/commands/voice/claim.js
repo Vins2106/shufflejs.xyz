@@ -14,11 +14,31 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   let getChl = await db.get(`tempvoicechannel_${message.guild.id}_${voiceChannel.id}`);
   
-  if (!getChl) return message.channel.send(``)
+  if (!getChl) return message.channel.send(`This is not join-to-create voice channel, please make your own!`);
+  
+  let getUserVC = await db.get(`jfc.${message.author.id}.voice`);
+  if (getUserVC.id == voiceChannel.id) {
+    return message.channel.send(`This is your own voice channel, you cannot claim!`)
+  } else {
+    
+  
+  db.set(`jfc.${message.author.id}.voice`, voiceChannel);
+  db.set(`jfc.${message.author.id}.joined`, true);
+  
+  let userVN = await db.get(`jfc.${message.author.id}.name`);
+  if (userVN) {
+    voiceChannel.edit({name: userVN});
+  } else if (!userVN) {
+    voiceChannel.edit({name: `🔊 - ${message.author.username} Voice`})
+  }
+  
+  return message.channel.send(`Succesfully claim this voice channel, now this voice channel is your own! :>`);
+  
+  }
   
 }
 
-exports.config = {
+exports.config = { 
   name: "claim",
   description: "Claim a voice channel",
   aliases: ["claim-voice"],
