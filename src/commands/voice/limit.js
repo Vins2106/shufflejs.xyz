@@ -16,8 +16,8 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   if (voiceChannel.id !== userData.voice.id) return message.channel.send(`Bro, you must create your own voice, or claim this voice using **${config.prefix}claim**`);
    
   let limit = args[0];
-  if (!limit) return message.channel.send(`Please provide limit! e.g 2`);
-  if (isNaN(limit)) return message.channel.send(`The limit must be a number!`)
+  if (!limit) return message.channel.send(`Please provide limit! e.g 2 & 0 to disab;e`);
+  if (isNaN(limit)) return message.channel.send(`The limit must be a number! 0 to disable limit`)
   if (limit > 99) limit = 99;
   
   let vc = client.channels.cache.get(voiceChannel.id) || await client.channels.fetch(voiceChannel.id);
