@@ -1,9 +1,24 @@
 const db = require('quick.db');
+const ms = require('parse-ms')
 
 exports.run = async (message, client, args, music, config, handleVideo, play, youtube, url) => {
 
   if (!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send(`Wow, looks like you do not have **Manage Guild** permission!`);
   
+    let pad_zero = num => (num < 10 ? '0' : '') + num;
+    let cooldown = 100000;
+    let lastCreate = db.get(`lastc.${message.guild.id}`);
+        
+        if (lastCreate !== null && cooldown - (Date.now() - lastCreate) > 0) {
+            let timeObj = ms(cooldown - (Date.now() - lastCreate));
+
+       
+                let mins = pad_zero(timeObj.minutes).padStart(2, "0"),
+                secs = pad_zero(timeObj.seconds).padStart(2, "0");
+
+            let finalTime = `**${mins}:${secs}**`;
+            return message.channel.send(`Oops! this server have cooldown to setup join-to-create! ${finalTime}`);
+        } else { 
     message.guild.channels.create('JFC', {
       type: 'category'
     }).then(c => {
@@ -26,6 +41,9 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
       })
     })  
   
+          db.set(`lastc.${message.guild.id}`, Date.now())
+          
+        }  
 }
 
 exports.config = {
