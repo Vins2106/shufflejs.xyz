@@ -141,9 +141,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
           connection.voice.setSelfDeaf(true); 
           
         } catch (error) {
-            console.error(`[ERROR] I could not join the voice channel, because: ${error}`);
-            music.delete(message.guild.id);
-            return message.channel.send(`I could not join the voice channel, because: **\`${error}\`**`);
+            console.error(`I cannot join voice channel because do not have permission to join or speak!`);
+            return music.delete(message.guild.id);
         }
     } else {
         serverQueue.songs.push(song);
