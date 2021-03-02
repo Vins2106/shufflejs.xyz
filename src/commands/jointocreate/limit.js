@@ -13,14 +13,18 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   if (!userData.joined) return message.channel.send(`Please join **${client.channels.cache.get(guildData).name}** to create your own voice channel!`);
   
-  if (voiceChannel.id !== userData.voice.id) return message.channel.send(`Bro, you must join your own voice, or claim this voice using **${config.prefix}claim**`);
+  if (voiceChannel.id !== userData.voice.id) return message.channel.send(`Bro, you must create your own voice, or claim this voice using **${config.prefix}claim**`);
   
   let limit = args[0];
   if (!limit) return message.channel.send(`Please provide limit! e.g 2`);
   if (isNaN(limit)) return message.channel.send(`The limit must be a number!`)
   if (limit > 99) limit = 99;
   
+  let vc = client.channels.cache.get(voiceChannel.id) || await client.channels.fetch(voiceChannel.id);
   
+  vc.edit({userLimit: limit});
+  
+  return message.channel.send(`You voice channel (**${voiceChannel.name}**) limit has been set to **${limit}**`)
   
 }
 
