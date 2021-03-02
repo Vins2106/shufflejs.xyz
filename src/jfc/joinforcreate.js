@@ -96,6 +96,25 @@ module.exports = function (client) {
 }
   })
     async function jointocreatechannel(user) {
+    let pad_zero = num => (num < 10 ? '0' : '') + num;
+    let cooldown = 5000;
+    let lastCreate = jointocreatemap.get(`lastcvc.${user.member.user.id}`);
+    let ms = require("parse-ms");  
+      
+        if (lastCreate !== null && cooldown - (Date.now() - lastCreate) > 0) {
+            let timeObj = ms(cooldown - (Date.now() - lastCreate));
+
+       
+                let mins = pad_zero(timeObj.minutes).padStart(2, "0"),
+                secs = pad_zero(timeObj.seconds).padStart(2, "0");
+
+            let finalTime = `**${mins}:${secs}**`;
+            let findUser1 = await client.users.fetch(user.member.user.id);
+          
+            return client.users.cache.get(findUser1.id).send(`You are too fast to create a voice channel, please wait for ${finalTime}\n\nspam protection`);
+          
+        } else { 
+      
       let jfcID = await jointocreatemap.get(`jfcCat.${user.guild.id}`);
       let userChlName = jointocreatemap.get(`jfc.${user.member.user.id}.name`);
       if (!userChlName) userChlName = `🔊 - ${user.member.user.username} Voice`
@@ -124,5 +143,8 @@ module.exports = function (client) {
           },
         ]);
       })
+          
+          jointocreatemap.set(`lastcvc.${user.member.user.id}`, Date.now())
+        }      
     }
 }
