@@ -19,7 +19,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   let getUserVC = await db.get(`jfc.${message.author.id}.voice`);
   if (getUserVC.id == voiceChannel.id) {
     return message.channel.send(`This is your own voice channel, you cannot claim!`)
-  } else {
+  } else if (!getUserVC || getUserVC !== voiceChannel.id){
     
   let getOwner = await db.get(`ownerJFC.${voiceChannel.id}`);
   
