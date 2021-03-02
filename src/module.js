@@ -2,13 +2,16 @@ module.exports = async (client, fs) => {
   fs.readdir('./src/commands/', async (err, category) => {
     category.forEach(cat => {
       let moduleConfig = require(`./commands/${cat}/module.json`);
+      moduleConfig.cmds = [];
       
       client.modules.set(moduleConfig.name, moduleConfig);
       if (!moduleConfig) return;
       
-      fs.readdir(`./src/commands/${cat}`, async (err, commands) => {
+      fs.readdir(`./src/commands/${cat}`, async (err, cmds) => {
         
-        commands.forEach(cmd => {
+        let commands = new Map();
+        
+        cmds.forEach(cmd => {
           
           if (!cmd.endsWith('.js')) return;
           
