@@ -18,6 +18,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
 
             let finalTime = `**${mins}:${secs}**`;
             return message.channel.send(`Oops! this server have cooldown to setup join-to-create! ${finalTime}`);
+          
         } else { 
     message.guild.channels.create('JFC', {
       type: 'category'
