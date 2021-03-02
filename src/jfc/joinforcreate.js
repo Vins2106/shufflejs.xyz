@@ -13,8 +13,8 @@ module.exports = function (client) {
 //log that the module is loaded
     console.log(`Loaded join to create!`)
 //voice state update event to check joining/leaving channels
-    client.on("voiceStateUpdate", (oldState, newState) => {
-    let jfcID = jointocreatemap.get(`jfc.${newState.guild.id}`);
+    client.on("voiceStateUpdate", async (oldState, newState) => {
+    let jfcID = await jointocreatemap.get(`jfc.${newState.guild.id}`);
     if (!jfcID) return;
       
   new Promise(resolve => {
@@ -94,12 +94,13 @@ module.exports = function (client) {
 }
   })
     async function jointocreatechannel(user) {
+      let jfcID = await jointocreatemap.get(`jfcCat.${user.guild.id}`);
       let userChlName = jointocreatemap.get(`jfc.${user.member.user.id}.name`);
       if (!userChlName) userChlName = `🔊 - ${user.member.user.username} Voice`
       
       await user.guild.channels.create(userChlName, {
         type: 'voice',
-        parent: user.channel.parent.id, //or set it as a category id
+        parent: jfcID, //or set it as a category id
       }).then(async vc => {
         //move user to the new channel
         user.setChannel(vc);
@@ -107,6 +108,7 @@ module.exports = function (client) {
         jointocreatemap.set(`tempvoicechannel_${vc.guild.id}_${vc.id}`, vc.id);
         jointocreatemap.set(`jfc.${user.member.user.id}.joined`, true)
         jointocreatemap.set(`jfc.${user.member.user.id}.voice`, vc);
+        jointocreatemap.set(`ownerJFC.${vc.id}`, user.member.user)
         //change the permissions of the channel
         await vc.overwritePermissions([
           {

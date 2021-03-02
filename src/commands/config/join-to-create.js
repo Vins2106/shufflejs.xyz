@@ -23,6 +23,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     message.guild.channels.create('JFC', {
       type: 'category'
     }).then(c => {
+      db.set(`jfcCat.${message.guild.id}`, c.id)
       c.setPosition(0)
       message.guild.channels.create(`✏️ Manage JFC`, {
         type: 'text',
@@ -31,7 +32,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
         c2.setParent(c.id)
       })
       
-      message.guild.channels.create("➕ Join For Create", {
+      message.guild.channels.create("➕ Join To Create", {
         type: 'voice',
         userLimit: 1
       }).then(c1 => {
