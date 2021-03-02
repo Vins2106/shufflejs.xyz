@@ -56,6 +56,7 @@ module.exports = function (client) {
               // delete user
               jointocreatemap.delete(`jfc.${oldState.member.user.id}.voice`)
               jointocreatemap.set(`jfc.${oldState.member.user.id}.joined`, false)
+              jointocreatemap.set(`lock.${oldState.channelID}`, false)
               
               return vc.delete(); 
           }
@@ -84,6 +85,7 @@ module.exports = function (client) {
         // delete user
           jointocreatemap.delete(`jfc.${oldState.member.user.id}.voice`)
           jointocreatemap.set(`jfc.${oldState.member.user.id}.joined`, false)
+          jointocreatemap.set(`lock.${oldState.channelID}`, false)
           
           return vc.delete(); 
       }
@@ -109,6 +111,7 @@ module.exports = function (client) {
         jointocreatemap.set(`jfc.${user.member.user.id}.joined`, true)
         jointocreatemap.set(`jfc.${user.member.user.id}.voice`, vc);
         jointocreatemap.set(`ownerJFC.${vc.id}`, user.member.user)
+        jointocreatemap.set(`lock.${vc.id}`, false)
         //change the permissions of the channel
         await vc.overwritePermissions([
           {

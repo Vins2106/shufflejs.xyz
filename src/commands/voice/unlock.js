@@ -16,19 +16,19 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   let chl = client.channels.cache.get(userData.id) || await client.channels.fetch(userData.id);
   
   let check = await db.get(`lock.${voiceChannel.id}`);
-  if (check) return message.channel.send(`You voice already locked!`)
+  if (!check) return message.channel.send(`You voice do not locked!`)
   
-  chl.edit({userLimit: 1});
+  chl.edit({userLimit: 0});
   
-  db.set(`lock.${voiceChannel.id}`, true);
+  db.set(`lock.${voiceChannel.id}`, false);
   
-  return message.channel.send(`Succesfully lock your voice channel!`);
+  return message.channel.send(`Succesfully unlock your voice channel!`);
   
 }
 
 exports.config = {
-  name: "lock",
-  description: "Lock your voice channel",
-  aliases: ["lock-vc"],
+  name: "unlock",
+  description: "Unlock your voice channel",
+  aliases: ["unlock-vc"],
   cooldown: 10
 }
