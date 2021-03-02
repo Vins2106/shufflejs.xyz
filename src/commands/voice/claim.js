@@ -46,11 +46,15 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   let check = message.guild.members.cache.get(getOwner.id).voice.channel;
   if (!check) {
-    
+    db.delete(`jfc.${getOwner.id}.voice`)
   } else if (check) {
     
     if (check.id == voiceChannel.id) {
-      db.delete(``)
+      db.delete(`jfc.${getOwner.id}.voice`);
+    }
+    
+    if (!db.get(`tempvoicechannel_${message.guild.id}_${check.id}`)) {
+      db.delete(`jfc.${getOwner.id}.voice`)
     }
     
   }
