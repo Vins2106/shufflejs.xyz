@@ -17,10 +17,11 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   if (!getChl) return message.channel.send(`This is not join-to-create voice channel, please make your own!`);
   
   let getUserVC = await db.get(`jfc.${message.author.id}.voice`);
-  if (getUserVC.id == voiceChannel.id) {
+  if (getUserVC) {
+    if (getUserVC.id == voiceChannel.id) { 
     return message.channel.send(`This is your own voice channel, you cannot claim!`)
-  } else if (!getUserVC || getUserVC !== voiceChannel.id){
-    
+    }
+  }
   let getOwner = await db.get(`ownerJFC.${voiceChannel.id}`);
   
   let voiceCM = [];
@@ -32,7 +33,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   if (voiceCM.includes(getOwner.id)) {
     return message.channel.send(`You cannot claim this voice, the owner on this voice!`)
   }
-    
+  
   db.set(`jfc.${message.author.id}.voice`, voiceChannel);
   db.set(`jfc.${message.author.id}.joined`, true);
   
@@ -43,9 +44,11 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     voiceChannel.edit({name: `🔊 - ${message.author.username} Voice`})
   }
   
+  message.guild.members.cache.get(getOwner.id).voice
+  
   return message.channel.send(`Succesfully claim this voice channel, now this voice channel is your own! :>`);
   
-  }
+  
   
 }
 
