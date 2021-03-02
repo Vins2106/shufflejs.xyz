@@ -44,7 +44,16 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     voiceChannel.edit({name: `🔊 - ${message.author.username} Voice`})
   }
   
-  message.guild.members.cache.get(getOwner.id).voice
+  let check = message.guild.members.cache.get(getOwner.id).voice.channel;
+  if (!check) {
+    
+  } else if (check) {
+    
+    if (check.id == voiceChannel.id) {
+      db.delete(``)
+    }
+    
+  }
   
   return message.channel.send(`Succesfully claim this voice channel, now this voice channel is your own! :>`);
   
