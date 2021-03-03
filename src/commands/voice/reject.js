@@ -36,6 +36,8 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   if (message.guild.members.cache.get(user.id).voice.channel.id == voiceChannel.id) {
     return message.guild.members.cache.get(user.id).voice.kick();
+  } else if (!message.guild.members.cache.get(user.id).voice.channel || message.guild.members.cache.get(user.id).voice.channel.id !== voiceChannel.id) {
+    return;
   }
   
   
