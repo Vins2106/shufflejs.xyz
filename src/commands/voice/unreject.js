@@ -11,39 +11,36 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   let getUserVC = await db.get(`jfc.${message.author.id}.voice`);
   
-  if (voiceChannel.id !== getUserVC.id) return message.channel.send(`This is not your own voice channel, claim this voice to reject user!`);
+  if (voiceChannel.id !== getUserVC.id) return message.channel.send(`This is not your own voice channel, claim this voice to unreject user!`);
   
   let user = message.mentions.users.first() || client.users.cache.get(args[0]) || await client.users.fetch(args[0]);
-  if (!user) return message.channel.send(`Please mention or give user id!`)  
+  if (!user) return message.channel.send(`Please mention or give user id!`)
+  
   
   let getOwn = await db.get(`ownerJFC.${voiceChannel.id}`);
   
-  if (user.id == getOwn.id) return message.channel.send(`You cant reject voice owner!`);
+  if (user.id == getOwn.id) return message.channel.send(`This is voice owner, the owner do not reject!`)
   
   let _reject = await db.get(`reject.${voiceChannel.id}.${user.id}`);
-  if (_reject) return message.channel.send(`This user do not rejected from this voice!`)  
+  if (!_reject) return message.channel.send(`This user do not rejected from this voice!`)
   
   voiceChannel.overwritePermissions([
     {
       id: user.id,
-      deny: ['VIEW_CHANNEL', 'CONNECT']
+      allow: ['VIEW_CHANNEL', 'CONNECT']
     }
   ]);
   
-  message.channel.send(`<@${user.id}> You have been prohibited from joining **${getUserVC.name}**!`);
+  message.channel.send(`<@${user.id}> You have been unreject from joining **${getUserVC.name}**!`);
   
-  db.set(`reject.${voiceChannel.id}.${user.id}`, true)
-  
-  if (message.guild.members.cache.get(user.id).voice.channel.id == voiceChannel.id) {
-    return message.guild.members.cache.get(user.id).voice.kick();
-  }
+  db.set(`reject.${voiceChannel.id}.${user.id}`, false)
   
   
 }
 
 exports.config = {
-  name: "reject",
-  description: "Reject user from voice channel!",
-  aliases: ["rj"],
+  name: "unreject",
+  description: "Unreject user from voice channel!",
+  aliases: ["un-rj", "unrj"],
   cooldown: 10
 }
