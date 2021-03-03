@@ -27,8 +27,11 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     }
   ]);
   
-  let userVoice = user.voice.channel
+  message.channel.send(`<@${user.id}> You have been prohibited from joining **${getUserVC.name}**!`);
   
+  if (message.guild.members.cache.get(user.id).voice.channel.id == voiceChannel.id) {
+    return 
+  }
   
   
 }
