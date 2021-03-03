@@ -46,7 +46,9 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     name: newName
   });
   
-          db.set(`lastCNM.${message.author.id}`, Date.now())
+          db.set(`jfc.${message.author.id}`, voiceChannel)
+          
+          db.set(`lastCNM.${message.author.id}`, Date.now());
           
   return message.channel.send(`Your voice channel name has been set to **${newName}**`)
   
