@@ -10,6 +10,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   if (!voiceChannel) return message.channel.send(`Please join **${client.channels.cache.get(jtc).name}** first to create your own voice channel!`);
   
   let getUserVC = await db.get(`jfc.${message.author.id}.voice`);
+  if (!getUserVC) return message.channel.send(`Please create voice channel first!`)
   
   if (voiceChannel.id !== getUserVC.id) return message.channel.send(`This is not your own voice channel, claim this voice to reject user!`);
   

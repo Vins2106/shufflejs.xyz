@@ -11,6 +11,15 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   if (!voiceChannel) return message.channel.send(`Please join **${client.channels.cache.get(guildData).name}** to create your own voice channel!!`)
    
+  let getUserVC = await db.get(`jfc.${message.author.id}.voice`);
+  if (getUserVC) {
+    if (getUserVC.id !== voiceChannel.id) { 
+    return message.channel.send(`This is not your voice channel! claim this voice to limit!`)
+    }
+  } else {
+    return message.channel.send(`Please create voice channel first!`)
+  }  
+  
   let limit = args[0];
   if (!limit) return message.channel.send(`Please provide limit! e.g 2 & 0 to disab;e`);
   if (isNaN(limit)) return message.channel.send(`The limit must be a number! 0 to disable limit`)

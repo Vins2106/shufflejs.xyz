@@ -13,6 +13,10 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   if (!userData) return message.channel.send(`Please create your own voice channel!`);
   
+  if (userData.id !== voiceChannel.id) {
+    return message.channel.send(`This is not your voice channel!`)
+  }
+  
   let chl = client.channels.cache.get(userData.id) || await client.channels.fetch(userData.id);
   
   let check = await db.get(`lock.${voiceChannel.id}`);
