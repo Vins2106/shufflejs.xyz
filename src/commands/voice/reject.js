@@ -27,6 +27,8 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     }
   ]);
   
+  let userVoice = user.voice.channel
+  
   
   
 }
