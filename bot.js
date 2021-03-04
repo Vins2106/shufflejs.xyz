@@ -151,7 +151,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         new Discord.MessageEmbed()
           .setAuthor("New song added to queue!")
           .setColor(config.embed)
-          .setTitle(`${song.title} - ${song.duration.hours} : ${song.duration.minutes} : ${song.duration.seconds}`)
+          .setTitle(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`)
           .setDescription(`${song.url}`)
           .setImage(song.thumbnail.url)
         );
@@ -165,6 +165,32 @@ async function play(message, song) {
     const serverQueue = music.get(guild.id);
 
     if (!song) {
+      if (serverQueue.autoplay) {
+          let _related = await ytdl.getInfo(serverQueue.latestSong.id);
+          
+          let related = _related.response.contents.twoColumnWatchNextResults.autoplay.autoplay.sets[0].autoplayVideo.watchEndpoint.videoId;
+          
+          let video = await youtube.getVideoByID(related)
+          
+          let songConstructor =
+              {
+                  id: video.id,
+                  title: Util.escapeMarkdown(video.title),
+                  url: `https://www.youtube.com/watch?v=${video.id}`,
+                  thumbnail: video.thumbnails.medium,
+                  duration: video.duration,
+                  formatDuration: video.durationSeconds,
+                  user: client.user,
+                  guild: message.guild,
+                  message                
+              }
+          
+          serverQueue.latestSong(songConstructor)
+          serverQueue.songs.push(songConstructor)
+          
+          return play(message, serverQueue.songs[0])        
+      }
+      
         serverQueue.voiceChannel.leave();
         serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
           timeout: 5000
@@ -178,13 +204,10 @@ async function play(message, song) {
           try {
             const shiffed = serverQueue.songs.shift();
             if (serverQueue.loop === true) {
+              serverQueue.latestSong = shiffed;
                 serverQueue.songs.push(shiffed);
             };
             
-          if (serverQueue.latestSong) {
-          serverQueue.latestSong = serverQueue.songs[0];
-          return play(message, serverQueue.songs[0])            
-          }
             // autoplay
             if (!serverQueue.songs[0]) {
               if (serverQueue.stopped) {
@@ -218,7 +241,7 @@ async function play(message, song) {
           
           serverQueue.songs.push(songConstructor)
           
-          return play(message, songConstructor)
+          return play(message, serverQueue.songs[0])
         } else {
             if (serverQueue.songs[1]) {
           if (serverQueue.shuffle) {
@@ -254,6 +277,32 @@ async function play(message, song) {
               
             return play(message, serverQueue.songs[0]);            
             } else {
+              
+              if (serverQueue.autoplay) {
+          let _related = await ytdl.getInfo(serverQueue.latestSong.id);
+          
+          let related = _related.response.contents.twoColumnWatchNextResults.autoplay.autoplay.sets[0].autoplayVideo.watchEndpoint.videoId;
+          
+          let video = await youtube.getVideoByID(related)
+          
+          let songConstructor =
+              {
+                  id: video.id,
+                  title: Util.escapeMarkdown(video.title),
+                  url: `https://www.youtube.com/watch?v=${video.id}`,
+                  thumbnail: video.thumbnails.medium,
+                  duration: video.duration,
+                  formatDuration: video.durationSeconds,
+                  user: client.user,
+                  guild: message.guild,
+                  message                
+              }
+          
+          serverQueue.songs.push(songConstructor)
+          
+          return play(message, serverQueue.songs[0])                
+              }
+              
             serverQueue.latestSong = serverQueue.songs[0];
             return play(message, serverQueue.songs[0]);
             }
@@ -266,7 +315,12 @@ async function play(message, song) {
         .on("error", error => message.channel.send(`Hmm, looks like this is not music video, **404**\n${error}`));
     dispatcher.setVolume(serverQueue.volume / 100);
 
-    serverQueue.textChannel.send(new Discord.MessageEmbed().setAuthor(`Now playing - ${song.user.username}`).setColor(config.embed).setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`).setImage(song.thumbnail.url).setFooter(`${song.url}`)).then(m => {
+    serverQueue.textChannel.send(new Discord.MessageEmbed()
+                                 .setAuthor(`Now playing - ${song.user.username}`)
+                                 .setColor(config.embed)
+                                 .setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**\n\nLoop: **${serverQueue.loop ? "on" : "off"}** | Volume: **${serverQueue.volume}** | Autoplay: **${serverQueue.autoplay ? "on" : "off"}** | Requested by: **${song.user.tag} ${song.user.bot ? "[BOT]" : ""}**`)
+                                 .setImage(song.thumbnail.url)
+                                 .setFooter(`${song.url}`)).then(m => {
       
       m.react("🔁");
       m.react("⏭️");

@@ -11,7 +11,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   const npE = new MessageEmbed()
   .setAuthor(`Playing music by - ${song.user.username}`)
-  .setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`)
+  .setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**\n\nLoop: **${queue.loop ? "on" : "off"}** | Volume: **${queue.volume}** | Autoplay: **${queue.autoplay ? "on" : "off"}** | Requested by: **${song.user.tag} ${song.user.bot ? "[BOT]" : ""}**`)
   .setImage(song.thumbnail.url)
   .setColor(config.embed)
   .setFooter(`${song.url}`)
