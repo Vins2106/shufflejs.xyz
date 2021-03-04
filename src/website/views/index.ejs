@@ -7,18 +7,32 @@
   <body>
     <div class="stats-box">
       <div class="servers">
-        <% setInterval(function() { %>
-        <span><%= client.guilds.cache.size %></span>
-        <% }, 1000) %>
+        <span id="servers"></span>
       </div>
       <div class="channels">
-        <% setInterval(function() { %>
-        <span><%= client.channels.cache.size %></span>
-        <% }, 1000) %>
+        <span id="channels"></span>
       </div>
       <div class="users">
         <span></span>
       </div>
     </div>
+    
+    <script>
+    setInterval(function() {
+      document.getElementById("servers").innerHTML = <%= client.guilds.cache.size %>
+    }, 1000)
+    
+    
+    </script>
+    
+<script>
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+  
+  document.getElementById("channels").innerHTML = <%= client.channels.cache.size %>
+  
+}, 1000);
+</script>    
   </body>
 </html>
