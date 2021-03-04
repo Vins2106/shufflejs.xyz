@@ -11,8 +11,8 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   
   let _joinAble = await voiceChannel.join()
   
-  _joinAble.voice.setSelfDeaf(true)
-  client.voice.set(message.author.id, message.author);
+  _joinAble.voice.setSelfDeaf(true) 
+  client.voices.set(message.author.id, message.author);
   
   return message.channel.send(`Joined \`${voiceChannel.name}\` !`)
   
