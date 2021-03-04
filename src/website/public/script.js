@@ -1,5 +1,5 @@
 async function test() { 
-  fetch(`https://magnificent-available-justice.glitch.me/api`).then(async data => {
+  fetch(`https://botshuffle.glitch.me/api`).then(async data => {
   let dataJson = await data.json();
   
   document.getElementById("channels").innerHTML = dataJson.channels;
