@@ -29,6 +29,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
             var video = await youtube.getVideo(url);
           } catch (e) {
             
+            try {
           let videos = await youtube.searchVideos(searchString, 10);
           
           let index = 0;
@@ -37,25 +38,30 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           .setAuthor(`search result for ${searchString}`, client.user.displayAvatarURL())
           .setColor(config.embed)
           .setFooter('select from 1 - 10!')
-          .setDescription(videos.map(song => `**[${++index}.]** - **${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}**`));
+          .setDescription(videos.map(song => `**[${++index}.]** - **${song.title}**`).join("\n"));
           
           message.channel.send(searchE).then(m => {
             m.delete({
-              timeout: 20 * 1000
+              timeout: 20000
             })
           });
           
           let select = await message.channel.awaitMessages(msg => msg.content > 0 && message.content < 11, {
-            time: 20 * 1000,
-            max: 1
+            max: 1,
+            time: 20000
           });
           
-          if (!select.size) return message.channel.send(`Cancel to play song /:(`);
+          if (!select.size) return message.channel.send(`Cancel to play song :(`);
           
           let _select = select.first().content;
             
-          var video = await youtube.getVideoByID(videos[_select - 1].id);
+          var video = await youtube.getVideoByID(videos[_select].id);
             
+          return handleVideo(video, message, voiceChannel);              
+            } catch (e) {
+              return message.channel.send(`Oh no ${e}`)
+            }
+          
           }
           
           
