@@ -17,21 +17,20 @@
       </div>
     </div>
     
-    <script>
-    setInterval(function() {
-      document.getElementById("servers").innerHTML = <%= client.guilds.cache.size %>
-    }, 1000)
-    
-    
-    </script>
-    
-<script>
+<script type="application/javascript">
 
 // Update the count down every 1 second
 var x = setInterval(function() {
   
-  document.getElementById("channels").innerHTML = <%= client.channels.cache.size %>
+  var axios = <%= require("axios") %>
   
+  axios.get(`https://magnificent-available-justice.glitch.me/api`).then(data => {
+  
+  
+  document.getElementById("servers").innerHTML = data.data.servers
+  
+    
+  })
 }, 1000);
 </script>    
   </body>

@@ -10,7 +10,16 @@ app.get('/', (req, res) => {
     client,
     Discord,
     req,
-    res
+    res,
+    require
+  })
+})
+
+app.get("/api", (req, res) => {
+  res.send({
+    users: client.users.cache.size,
+    channels: client.channels.cache.size,
+    guilds: client.guilds.cache.size
   })
 })
 
