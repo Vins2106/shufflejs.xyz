@@ -166,6 +166,48 @@ async function play(message, song) {
     const serverQueue = music.get(guild.id);
 
     if (!song) {
+        
+        serverQueue.voiceChannel.leave();
+        serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
+          timeout: 5000
+        }))
+      
+        return music.delete(message.guild.id)
+    }
+
+    const dispatcher = serverQueue.connection.play(ytdl(song.url), { highWaterMark: 1 >> 25 }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
+        .on("finish", async () => { 
+          try {
+            
+            const shiffed = serverQueue.songs.shift();
+            if (serverQueue.loop) {
+                serverQueue.latestSong = shiffed;
+                serverQueue.songs.push(shiffed);
+            };
+            
+              if (serverQueue.stopped) {
+                serverQueue.songs = [];
+                serverQueue.voiceChannel.leave();
+                
+                return music.delete(message.guild.id)
+              } 
+
+          if (serverQueue.shuffle) {
+            let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
+            if (!random) return;
+            
+            serverQueue.latestSong = random;
+            return play(message, random)
+          }              
+            serverQueue.latestSong = serverQueue.songs[0];
+              
+            return play(message, serverQueue.songs[0]);            
+            
+          } catch (e) {
+            serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c\n" + e)
+          }
+        }).on("end", async reason => {
+          
       if (serverQueue.autoplay) {
           let _related = await ytdl.getInfo(serverQueue.latestSong.id);
           
@@ -190,78 +232,8 @@ async function play(message, song) {
           serverQueue.songs.push(songConstructor) 
           
           return play(message, serverQueue.songs[0])        
-      } else if (!serverQueue.autoplay) {
-        
-        serverQueue.voiceChannel.leave();
-        serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
-          timeout: 5000
-        }))
-      
-      }
-      
-        return music.delete(message.guild.id)
-    }
-
-    const dispatcher = serverQueue.connection.play(ytdl(song.url), { highWaterMark: 1 >> 25 }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
-        .on("finish", async () => { 
-          try {
-            const shiffed = serverQueue.songs.shift();
-            if (serverQueue.loop) {
-                serverQueue.latestSong = shiffed;
-                serverQueue.songs.push(shiffed);
-            };
-            
-            // autoplay
-            if (!serverQueue.songs[0]) {
-              if (serverQueue.stopped) {
-                serverQueue.songs = [];
-                serverQueue.voiceChannel.leave();
-                
-                return music.delete(message.guild.id)
-              }
-              
-            if (serverQueue.songs[1]) {
-          if (serverQueue.shuffle) {
-            let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
-            if (!random) return;
-            
-            serverQueue.latestSong = random;
-            
-            return play(message, random)
-          }
-            serverQueue.latestSong = serverQueue.songs[0];
-            return play(message, serverQueue.songs[0]);            
-            } else {
-            return play(message, serverQueue.songs[0]);
-            }
-              
-            } else {  
-              
-              // normal
-            if (serverQueue.songs[1]) {
-          if (serverQueue.shuffle) {
-            let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
-            if (!random) return;
-            
-            serverQueue.latestSong = random;
-            return play(message, random)
-          }              
-            serverQueue.latestSong = serverQueue.songs[0];
-              
-            return play(message, serverQueue.songs[0]);            
-            } else {
-      
-            return play(message, serverQueue.songs[0]);
-              
-            }
-            }
-            
-            return play(message)
-            
-          } catch (e) {
-            serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c\n" + e)
-          }
-        }) 
+      }            
+        })
         .on("error", error => message.channel.send(`Hmm, looks like this is not music video, **404**\n${error}`));
     dispatcher.setVolume(serverQueue.volume / 100);
 
