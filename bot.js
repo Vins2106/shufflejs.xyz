@@ -116,15 +116,13 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         message
     };
     if (!serverQueue) {
-      let volume = await client.guildConfig.get(`jfc.${message.guild.id}.volume`);
-      if (!volume) volume = 100;
       
         const queueConstruct = {
             textChannel: message.channel,
             voiceChannel: voiceChannel,
             connection: null,
             songs: [],
-            volume: volume,
+            volume: 100,
             playing: true,
             loop: false,
             shuffle: false,
