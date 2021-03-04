@@ -46,12 +46,16 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
             })
           });
           
-          let select = await message.channel.awaitMessages(message2 => message2.author.id == message.author.id && message2.content > 0 && message2.content < 11, {
-                            max: 3,
+          let filter = message2 => message2.author.id == message.author.id && message2.content === "cancel" || message2.content > 0 && message2.content < 11;
+              
+          let select = await message.channel.awaitMessages(filter, {
+                            max: 1,
                             time: 20000
                         });
           
           if (!select.size) return message.channel.send(`Cancel to play song :(`);
+              
+          if (select.first().content === "cancel") return message.channel.send(`Cancel to play song`)
               
           let _select = parseInt(select.first().content);
             
