@@ -186,16 +186,18 @@ async function play(message, song) {
                   message                
               }
           
-          serverQueue.latestSong = songConstructor;
-        serverQueue.songs.push(songConstructor);  
+          serverQueue.latestSong = songConstructor
+          serverQueue.songs.push(songConstructor) 
+          
+          return play(message, serverQueue.songs[0])        
+      } else if (!serverQueue.autoplay) {
         
-          return play(message, serverQueue.songs[0]);        
-      }
-      
         serverQueue.voiceChannel.leave();
         serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
           timeout: 5000
         }))
+      
+      }
       
         return music.delete(message.guild.id)
     }
@@ -218,33 +220,6 @@ async function play(message, song) {
                 return music.delete(message.guild.id)
               }
               
-//               auto play
-        if (serverQueue.autoplay) {
-          
-          let _related = await ytdl.getInfo(serverQueue.latestSong.id);
-          
-          let related = _related.response.contents.twoColumnWatchNextResults.autoplay.autoplay.sets[0].autoplayVideo.watchEndpoint.videoId;
-          
-          let video = await youtube.getVideoByID(related)
-          
-          let songConstructor =
-              {
-                  id: video.id,
-                  title: Util.escapeMarkdown(video.title),
-                  url: `https://www.youtube.com/watch?v=${video.id}`,
-                  thumbnail: video.thumbnails.medium,
-                  duration: video.duration,
-                  formatDuration: video.durationSeconds,
-                  user: client.user,
-                  guild: message.guild,
-                  message                
-              }
-          
-          serverQueue.latestSong = songConstructor
-          serverQueue.songs.push(songConstructor)
-          
-          return play(message, serverQueue.songs[0])
-        } else {
             if (serverQueue.songs[1]) {
           if (serverQueue.shuffle) {
             let random = serverQueue.songs[Math.floor(Math.random() * serverQueue.songs.length)];
@@ -257,13 +232,9 @@ async function play(message, song) {
             serverQueue.latestSong = serverQueue.songs[0];
             return play(message, serverQueue.songs[0]);            
             } else {
-            serverQueue.latestSong = serverQueue.songs[0];
             return play(message, serverQueue.songs[0]);
-            }              
-          serverQueue.latestSong = serverQueue.songs[0];
-          return play(message, serverQueue.songs[0])
+            }
               
-        }
             } else {  
               
               // normal
@@ -279,13 +250,13 @@ async function play(message, song) {
               
             return play(message, serverQueue.songs[0]);            
             } else {
-          
-            serverQueue.latestSong = serverQueue.songs[0];
+      
             return play(message, serverQueue.songs[0]);
               
-              
             }
             }
+            
+            return play(message)
             
           } catch (e) {
             serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c\n" + e)
