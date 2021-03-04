@@ -17,8 +17,13 @@ app.get('/', (req, res) => {
 })
 
 app.get("/api", (req, res) => {
+  let users = 0;
+  client.guilds.cache.map(x => {
+    users = users + x.memberCount;
+  })
+  
   res.send({
-    users: client.users.cache.size,
+    users: users,
     channels: client.channels.cache.size,
     guilds: client.guilds.cache.size
   })

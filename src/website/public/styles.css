@@ -5,3 +5,15 @@ body {
 span {
   color: white;
 }
+
+.stats-box {
+  width: 50%;
+  text-align: center;
+  margin: auto;
+  padding: 20px;
+  display: flex;
+}
+
+.box {
+  text-align: center;
+}
