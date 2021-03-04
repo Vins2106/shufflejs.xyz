@@ -336,3 +336,8 @@ async function play(message, song) {
       
     })
 } 
+
+module.exports = {
+  client,
+  Discord
+}

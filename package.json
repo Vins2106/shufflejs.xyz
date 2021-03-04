@@ -2,7 +2,7 @@
   "name": "shuffle",
   "description": "Play music from discord easly",
   "version": "1.0.0",
-  "main": "bot.js",
+  "main": "routes.js",
   "scripts": {
     "start": "node ."
   },
