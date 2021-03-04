@@ -17,10 +17,16 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   let getUser = client.voices.get(message.author.id);
   
   if (getUser || message.member.hasPermission("MANAGE_CHANNELS")) {
+    let perms = false;
+    if (getUser) {
+      perms = false
+    } else if (!getUser) {
+      perms = true
+    }
     userVC.leave();
     client.voices.delete(message.author.id)
     
-    return message.channel.send(`Succesfully disconnect! **${message.member.hasPermission("MANAGE_CHANNELS") ? "Stopped by user with the person who has Manage Channels permission" : ""}**`)
+    return message.channel.send(`Succesfully disconnect! ${perms ? "**Stopped by user with the person who has Manage Channels permission**" : ""}`)
   } else if (!getUser || !message.member.hasPermission("MANAGE_CHANNELS")) {
     return message.channel.send(`You are need **Manage Channels** permissions because you are not the one who told me to join this voice channel`)
   }    
