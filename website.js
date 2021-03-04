@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const { client, Discord } = require("./bot.js");
+const axios = require("axios");
 
 app.use(express.static("src/website/public"));
 app.set('views', './src/website/views')  
@@ -11,7 +12,7 @@ app.get('/', (req, res) => {
     Discord,
     req,
     res,
-    require
+    axios
   })
 })
 

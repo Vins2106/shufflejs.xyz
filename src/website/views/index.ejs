@@ -17,21 +17,6 @@
       </div>
     </div>
     
-<script type="application/javascript">
-
-// Update the count down every 1 second
-var x = setInterval(function() {
-  
-  var axios = <%= require("axios") %>
-  
-  axios.get(`https://magnificent-available-justice.glitch.me/api`).then(data => {
-  
-  
-  document.getElementById("servers").innerHTML = data.data.servers
-  
-    
-  })
-}, 1000);
-</script>    
+    <script src="script.js"></script>
   </body>
 </html>
