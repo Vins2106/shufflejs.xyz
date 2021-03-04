@@ -1,5 +1,6 @@
 body {
   background-color: #080807;
+  margin: 20px;
 }
 
 span {
@@ -7,22 +8,33 @@ span {
 }
 
 .stats-box {
-  width: 50%;
+  width: 100%;
   text-align: center;
   margin: auto;
-  padding: 20px;
 }
 
 .box {
   text-align: center;
   margin: auto;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
+  background-color: gray;
+  border-radius: 20px;
+  padding: 20px;
+  width: 90%;
+  margin-right: 20px;
+  margin-left: 20px;
 }
 
 @media (min-width: 992px) {
   
+  .box {
+    width: 100%;
+  }
+  
   .stats-box {
+    width: 50%;
     display: flex;
+    text-align: center;
   }
   
 }
