@@ -186,10 +186,10 @@ async function play(message, song) {
                   message                
               }
           
-          serverQueue.latestSong(songConstructor)
-          serverQueue.songs.push(songConstructor)
-          
-          return play(message, serverQueue.songs[0])        
+          serverQueue.latestSong = songConstructor;
+        serverQueue.songs.push(songConstructor);  
+        
+          return play(message, serverQueue.songs[0]);        
       }
       
         serverQueue.voiceChannel.leave();
@@ -204,8 +204,8 @@ async function play(message, song) {
         .on("finish", async () => { 
           try {
             const shiffed = serverQueue.songs.shift();
-            if (serverQueue.loop === true) {
-              serverQueue.latestSong = shiffed;
+            if (serverQueue.loop) {
+                serverQueue.latestSong = shiffed;
                 serverQueue.songs.push(shiffed);
             };
             
@@ -240,6 +240,7 @@ async function play(message, song) {
                   message                
               }
           
+          serverQueue.latestSong = songConstructor
           serverQueue.songs.push(songConstructor)
           
           return play(message, serverQueue.songs[0])
@@ -278,34 +279,11 @@ async function play(message, song) {
               
             return play(message, serverQueue.songs[0]);            
             } else {
-              
-              if (serverQueue.autoplay) {
-          let _related = await ytdl.getInfo(serverQueue.latestSong.id);
           
-          let related = _related.response.contents.twoColumnWatchNextResults.autoplay.autoplay.sets[0].autoplayVideo.watchEndpoint.videoId;
-          
-          let video = await youtube.getVideoByID(related)
-          
-          let songConstructor =
-              {
-                  id: video.id,
-                  title: Util.escapeMarkdown(video.title),
-                  url: `https://www.youtube.com/watch?v=${video.id}`,
-                  thumbnail: video.thumbnails.medium,
-                  duration: video.duration,
-                  formatDuration: video.durationSeconds,
-                  user: client.user,
-                  guild: message.guild,
-                  message                
-              }
-          
-          serverQueue.songs.push(songConstructor)
-          
-          return play(message, serverQueue.songs[0])                
-              }
-              
             serverQueue.latestSong = serverQueue.songs[0];
             return play(message, serverQueue.songs[0]);
+              
+              
             }
             }
             
