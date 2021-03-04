@@ -1,5 +1,5 @@
 async function test() { 
-  fetch(`http://shufflejs.xyz/api`).then(async data => {
+  fetch(`https://shufflejs.xyz/api`).then(async data => {
   let dataJson = await data.json();
   
   document.getElementById("channels").innerHTML = dataJson.channels;
