@@ -11,9 +11,18 @@ span {
   text-align: center;
   margin: auto;
   padding: 20px;
-  display: flex;
 }
 
 .box {
   text-align: center;
+  margin: auto;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 992px) {
+  
+  .stats-box {
+    display: flex;
+  }
+  
 }
