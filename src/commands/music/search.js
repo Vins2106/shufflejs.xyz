@@ -38,7 +38,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           .setAuthor(`search result for ${searchString}`, client.user.displayAvatarURL())
           .setColor(config.embed)
           .setFooter('select from 1 - 10!')
-          .setDescription(videos.map(song => `**[${++index}.]** - **${song.title}**`).join("\n"));
+          .setDescription(videos.map(song => `**[${++index}.]** - **${song.title}**\n${song.url}`).join("\n\n"));
           
           message.channel.send(searchE).then(m => {
             m.delete({
@@ -46,16 +46,16 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
             })
           });
           
-          let select = await message.channel.awaitMessages(msg => msg.content > 0 && message.content < 11, {
-            max: 1,
-            time: 20000
-          });
+          let select = await message.channel.awaitMessages(message2 => message2.author.id == message.author.id && message2.content > 0 && message2.content < 11, {
+                            max: 3,
+                            time: 20000
+                        });
           
           if (!select.size) return message.channel.send(`Cancel to play song :(`);
-          
-          let _select = select.first().content;
+              
+          let _select = parseInt(select.first().content);
             
-          var video = await youtube.getVideoByID(videos[_select].id);
+          var video = await youtube.getVideoByID(videos[_select - 1].id);
             
           return handleVideo(video, message, voiceChannel);              
             } catch (e) {
