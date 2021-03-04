@@ -30,6 +30,7 @@ require("./src/module.js")(client, fs)
 
 client.on("ready", () => {
   client.user.setActivity("Maroon 5 - Girls Like You ft. Cardi B (Official Music Video)", {type: "PLAYING"})
+  client.voice = new Map()
   
   console.log(`Login as ${client.user.username}`)
   
