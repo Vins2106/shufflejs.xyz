@@ -129,7 +129,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             shuffle: false,
             autoplay: true,
             latestSong: song,
-            stopped: false
+            stopped: false,
+            filters: []
         };
         music.set(message.guild.id, queueConstruct);
         music.get(message.guild.id).songs.push(song);
@@ -171,11 +172,15 @@ async function play(message, song) {
         serverQueue.textChannel.send(`Wow! looks like no more song in queue, use me again with **${config.prefix}play** \:D`).then(m => m.delete({
           timeout: 5000
         }))
-      
+    
         return music.delete(message.guild.id)
     }
 
-    const dispatcher = serverQueue.connection.play(ytdl(song.url), { highWaterMark: 1 >> 25 }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
+    const dispatcher = serverQueue.connection.play(ytdl(song.url), {
+      highWaterMark: 1 << 25,
+      quality: "highestaudio",
+      encoderArgs: ['-af', serverQueue.filters]
+    }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
         .on("finish", async () => { 
           try {
             
