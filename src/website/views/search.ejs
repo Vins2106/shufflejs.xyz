@@ -12,7 +12,17 @@
       <input class="search-input" name="search" type="text" placeholder="Search video">
       <button class="btn search-btn">Search</button>
     </div>
-    </form>
+    </form>    
+    
+    <div class="videos-list">
+    <% videos.map(video => { %>
+      <div class="video-item">
+        <img class="video-img" src="<%= video.thumbnails.medium.url %>">
+        <title class="video-title"><%= video.title %></title>
+        <button onclick="/video/<%= video.item %>">View</button>
+      </div>
+    <% }) %>
+    </div>
     
   </body>
 </html>
