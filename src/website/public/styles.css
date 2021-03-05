@@ -1,40 +1,34 @@
+/* All */
 body {
-  background-color: #080807;
-  margin: 20px;
+  background-color: #0e0f0e;
+  text-align: center;
 }
 
-span {
-  color: white;
+.btn {
+  background-color: #11f2e7;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
-.stats-box {
+.btn:hover {
+  background-color: #21dbd2;
+}
+
+.search-
+
+/* Mobile */
+.search-box {
   width: 100%;
-  text-align: center;
   margin: auto;
 }
 
-.box {
-  text-align: center;
-  margin: auto;
-  margin-bottom: 25px;
-  background-color: gray;
-  border-radius: 20px;
-  padding: 20px;
-  width: 90%;
-  margin-right: 20px;
-  margin-left: 20px;
-}
 
+/* Desktop */
 @media (min-width: 992px) {
-  
-  .box {
-    width: 100%;
-  }
-  
-  .stats-box {
+ 
+  .search-box {
     width: 50%;
-    display: flex;
-    text-align: center;
   }
   
 }
