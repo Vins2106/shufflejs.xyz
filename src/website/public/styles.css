@@ -27,10 +27,16 @@ body {
   margin-top: 10px;
 }
 
+.videos-list {
+  text-align: left;
+}
+
 .video-title {
   width: 40%;
   text-align: center;
   vertical-align: top;
+  color: white;
+  font-weight: bold;
 }
 
 /* Mobile */
