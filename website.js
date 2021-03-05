@@ -45,5 +45,5 @@ app.get("/api", (req, res) => {
 });
 
 app.listen(process.env.PORT, () => {
-  console.log(`Listen to website!}`)
+  console.log(`Listen to website!})
 });

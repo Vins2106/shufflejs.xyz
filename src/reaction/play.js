@@ -54,13 +54,17 @@ async function createReactionMusic(m, song, message, client, serverQueue) {
             
             if (!canModify(member)) return message.member.send(`You cannot use this react!\n${m.url}`)
             
+            if (!serverQueue.songs[0].user.bot) {              
             if (user.id !== serverQueue.songs[0].user.id) return message.channel.send(`Oops **${user.tag}**, you cant use this react! if want to skip music, use **${config.prefix}skip** command \:D`).then(m2 => m2.delete({
               timeout: 5000
-            }))
+            }))              
+            }
             
             serverQueue.textChannel.send(`**${user.tag}** skip the song :>`).then(m2 => m2.delete({
               timeout: 5000
             }))
+            
+            m.delete()
             
              serverQueue.connection.dispatcher.end(); 
             
@@ -165,7 +169,11 @@ async function createReactionMusic(m, song, message, client, serverQueue) {
    
       collector.on("end", async collector => {
         m.delete()
-      })  
+      });
+  
+  collector.on("error", async () => {
+    return;
+  })
 }
 
 module.exports = {createReactionMusic}
