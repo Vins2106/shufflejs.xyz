@@ -18,8 +18,8 @@
     <% videos.map(video => { %>
       <div class="video-item" onclick="/video">
         <img class="video-img" src="<%= video.thumbnails.medium.url %>">
-        <title class="video-title"><%= video.title %></title>
         <br>
+        <span class="video-title"><%= video.title %></span>
         <span classs=""></span>
       </div>
     <% }) %>
