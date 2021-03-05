@@ -28,18 +28,25 @@ body {
 }
 
 .videos-list {
-  display: flex;
   flex-wrap: wrap;
   text-align: center;
   justify-content: center;
 }
 
 .video-title {
-  word-break: break-all;
+  width: 320px;
+  color: white;
+  padding: 10px;
+}
+
+.video-img {
+  text-align: left;
 }
 
 .video-item {
   margin-bottom: 20px;
+  width: 100%;
+  height: 200px;
 }
 
 /* Mobile */
@@ -56,5 +63,11 @@ body {
   .search-box {
     width: 50%;
   }
+  
+.videos-list {
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+}  
   
 }
