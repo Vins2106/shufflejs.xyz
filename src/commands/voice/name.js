@@ -46,7 +46,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     name: newName
   });
   
-          db.set(`jfc.${message.author.id}`, voiceChannel)
+          db.set(`jfc.${message.author.id}.voice`, voiceChannel)
           
           db.set(`lastCNM.${message.author.id}`, Date.now());
           

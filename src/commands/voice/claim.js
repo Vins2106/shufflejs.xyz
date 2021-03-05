@@ -30,10 +30,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     voiceCM.push(x.id);
   });
     
-  if (voiceCM.includes(getOwner.id)) {
-    return message.channel.send(`You cannot claim this voice, the owner on this voice!`)
-  }
-  
+  if (message.author.id == getOwner.id) {    
   db.set(`jfc.${message.author.id}.voice`, voiceChannel);
   db.set(`jfc.${message.author.id}.joined`, true);
   
@@ -55,9 +52,47 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
     
     if (!db.get(`tempvoicechannel_${message.guild.id}_${check.id}`)) {
       db.delete(`jfc.${getOwner.id}.voice`)
+    } else {
+      db.set(`jfc.${getOwner.id}.voice`, check)
     }
     
   }
+  
+  return message.channel.send(`Succesfully claim this voice channel, now this voice channel is your own! :>`);    
+  }
+  
+//   
+  
+  if (voiceCM.includes(getOwner.id)) {
+    return message.channel.send(`You cannot claim this voice, the owner on this voice!`)
+  }
+  
+  
+  let userVN = await db.get(`jfc.${message.author.id}.name`);
+  if (userVN) {
+    voiceChannel.edit({name: userVN});
+  } else if (!userVN) {
+    voiceChannel.edit({name: `🔊 - ${message.author.username} Voice`})
+  }
+  
+  let check = message.guild.members.cache.get(getOwner.id).voice.channel;
+  if (!check) {
+    db.delete(`jfc.${getOwner.id}.voice`)
+  } else if (check) {
+    
+    if (check.id == voiceChannel.id) {
+      db.delete(`jfc.${getOwner.id}.voice`);
+    }
+    
+    if (!db.get(`tempvoicechannel_${message.guild.id}_${check.id}`)) {
+      db.delete(`jfc.${getOwner.id}.voice`)
+    } else {
+      db.set(`jfc.${getOwner.id}.voice`, check)
+    }
+    
+  }
+  db.set(`jfc.${message.author.id}.voice`, voiceChannel);
+  db.set(`jfc.${message.author.id}.joined`, true);
   
   return message.channel.send(`Succesfully claim this voice channel, now this voice channel is your own! :>`);
   
