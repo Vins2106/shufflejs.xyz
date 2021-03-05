@@ -16,10 +16,11 @@
     
     <div class="videos-list">
     <% videos.map(video => { %>
-      <div class="video-item">
+      <div class="video-item" onclick="/video">
         <img class="video-img" src="<%= video.thumbnails.medium.url %>">
         <title class="video-title"><%= video.title %></title>
-        <button onclick="/video/<%= video.item %>">View</button>
+        <br>
+        <span classs=""></span>
       </div>
     <% }) %>
     </div>

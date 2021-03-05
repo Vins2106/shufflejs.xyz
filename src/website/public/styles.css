@@ -27,10 +27,22 @@ body {
   margin-top: 10px;
 }
 
+.videos-list {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: center;
+}
+
+.video-item {
+  margin-bottom: 20px;
+}
+
 /* Mobile */
 .search-box {
   width: 100%;
   margin: auto;
+  margin-bottom: 20px;
 }
 
 
