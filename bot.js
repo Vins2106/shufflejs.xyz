@@ -103,13 +103,14 @@ client.on("message", async message => {
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
-    let live;
     let duration;
   
-          if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds) {
-            live = "[LIVE]"
-          } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
-            duration = `${video.duration.hours} : ${video.durations.minutes}`
+          if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds == 0) {
+            duration = "[LIVE]"
+          } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.seconds !== 0) {
+            duration = `${video.duration.hours}h : ${video.durations.minutes}m`
+          } else {
+            duration = `${video.duration.hours}h : ${video.duration.minutes}m`
           }
   
   
@@ -118,7 +119,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         title: Util.escapeMarkdown(video.title),
         url: `https://www.youtube.com/watch?v=${video.id}`,
         thumbnail: video.thumbnails.medium,
-        duration: live || duration,
+        duration,
         formatDuration: video.duration,
         user: message.author,
         guild: message.guild,
@@ -215,13 +216,15 @@ async function play(message, song) {
           
           let video = await youtube.getVideoByID(related)
           
-          let duration = "[DEFAULT FORMAT]";
+          let duration
         
           if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds == 0) {
             duration = "[LIVE]"
-          } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
-            duration = `${video.duration.hours} : ${video.durations.minutes}`
-          } 
+          } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.seconds !== 0) {
+            duration = `${video.duration.hours}h : ${video.duration.minutes}m`
+          } else {
+            duration = `${video.duration.hours}h : ${video.duration.minutes}m`
+          }
           
           let songConstructor =
               {
@@ -236,7 +239,9 @@ async function play(message, song) {
                   message                
               }
           
-          return handleVideo(video, message, serverQueue.voiceChannel)
+          serverQueue.songs.push(songConstructor)
+          
+          return play(message, serverQueue.songs[0])
 
       } else if (!serverQueue.autoplay) {
         serverQueue.voiceChannel.leave();
