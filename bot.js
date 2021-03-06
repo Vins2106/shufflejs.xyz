@@ -105,7 +105,13 @@ client.on("message", async message => {
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
-    let xH = video.duration.hours * 3600000
+    let xH = video.duration.hours * 3600000;
+    let xM = video.duration.minutes * 60000;
+    let xS = video.duration.seconds * 1000; 
+  
+    if (xH + xM + xS < 10000) {
+      return message.channel.send(`The video cannot be less than 10 seconds, but you can play live stream!`)
+    }
   
     let duration;
   
@@ -114,8 +120,11 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
           } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.seconds !== 0) {
             duration = `${video.duration.hours}h : ${video.durations.minutes}m`
           } else {
+            
             duration = `${video.duration.hours}h : ${video.duration.minutes}m`
           }
+  
+  
   
   
     const song = {
