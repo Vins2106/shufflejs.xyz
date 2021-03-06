@@ -105,11 +105,17 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
     let durations;
   
-    if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.minutes == 0) {
-      durations = "[LIVE]"
-    } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
-      durations = `${video.duration.hours} : ${video.duration.minutes}`
-    }
+        try {
+          if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds) {
+            durations = "[LIVE]"
+          } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
+            durations = `${video.duration.hours} : ${video.durations.minutes}`
+          } else {
+            durations = "[TIME UNKNOWN]"
+          }          
+        } catch (e) {
+          durations = "[TIME UNKNOWN]"
+        }
   
   
     const song = {
@@ -125,9 +131,6 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     };
     if (!serverQueue) {
       
-      let autoplay = await client.guildConfig.get(`autoplay.${message.guild.id}`);
-      if (typeof autoplay == undefined) autoplay = true;
-      
         const queueConstruct = {
             textChannel: message.channel,
             voiceChannel: voiceChannel,
@@ -137,7 +140,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             playing: true,
             loop: false,
             shuffle: false,
-            autoplay: autoplay,
+            autoplay: true,
             latestSong: song,
             stopped: false,
             filters: []
@@ -219,13 +222,18 @@ async function play(message, song) {
           
           let durations;
         
+        
+        try {
           if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds) {
             durations = "[LIVE]"
           } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
             durations = `${video.duration.hours} : ${video.durations.minutes}`
           } else {
-            
-          }
+            durations = "[TIME UNKNOWN]"
+          }          
+        } catch (e) {
+          durations = "[TIME UNKNOWN]"
+        }
           
           let songConstructor =
               {
