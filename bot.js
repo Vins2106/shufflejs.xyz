@@ -185,6 +185,13 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
 
 async function play(message, song) {
   const guild = message.guild;
+    let xH = song.formatDuration.hours * 3600000;
+    let xM = song.formatDuration.minutes * 60000;
+    let xS = song.formatDuration.seconds * 1000; 
+  
+    if (xH + xM + xS > 10000) {
+      return message.channel.send(`The video cannot be less than 10 seconds, but you can play live stream! test ${xH + xM + xS}`)
+    }  
   
     const serverQueue = music.get(guild.id);
 
@@ -274,7 +281,7 @@ async function play(message, song) {
             serverQueue.textChannel.send("Cannot play this music, try another music, im sorry :c\n" + e)
           }
         })
-        .on("error", error => message.channel.send(`Hmm, looks like this is not music video, **404**\n${error}`));
+        .on("error", error => message.channel.send(`i have a error while playing this video, try again`));
     dispatcher.setVolume(serverQueue.volume / 100);
 
     serverQueue.textChannel.send(new Discord.MessageEmbed()
