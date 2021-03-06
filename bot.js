@@ -223,6 +223,8 @@ async function play(message, song) {
             durations = "[LIVE]"
           } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
             durations = `${video.duration.hours} : ${video.durations.minutes}`
+          } else {
+            
           }
           
           let songConstructor =
@@ -242,7 +244,17 @@ async function play(message, song) {
           serverQueue.songs.push(songConstructor) 
           
           return play(message, serverQueue.songs[0])        
-      } else if (!serverQueue)
+      } else if (!serverQueue.autoplay) {
+        serverQueue.voiceChannel.leave();
+        
+        serverQueue.textChannel.send(`No more song in queue, so i will leave from voice :D`).then(m => {
+          m.delete({
+            timeout: 5000
+          })
+        })
+        
+        return music.delete(message.guild.id)
+      }
            }
             
           } catch (e) {

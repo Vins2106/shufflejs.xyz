@@ -20,7 +20,10 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
         
         reaction.users.remove(user);
         
-        let _enable = music.get(message.guild.id).autoplay ? true : false;
+        let autoplayGuild = await db.get(`autoplay.${message.guild.id}`);
+        if (!autoplayGuild) autoplayGuild = true;
+        
+        let _enable = autoplayGuild ? true : false;
         let _conf = _enable;
         
         
@@ -30,7 +33,10 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           _conf = true;
         }
         
-        music.get(message.guild.id).autoplay = _conf;
+        let workAP_ = music.get(message.guild.id).autoplay = _conf;
+        if (!workAP_) {
+          
+        }
         
         db.set(`autoplay.${message.guild.id}`, _conf)
         
