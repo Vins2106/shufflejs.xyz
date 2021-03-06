@@ -118,27 +118,41 @@ module.exports = function (client) {
         } else { 
       
       let jfcID;
+      let j = await jointocreatemap.get(`jfc.${newState.guild.id}`);
       let userChlName = jointocreatemap.get(`jfc.${user.member.user.id}.name`);
       if (!userChlName) userChlName = `🔊 - ${user.member.user.username} Voice`
       
       let check = await jointocreatemap.get(`jfcCat.${user.guild.id}`);
       if (check) {
-        let check1 = user.guild.channels.cache.get(parseInt(check)).id;
+        try {
+          
+        let check1 = client.channels.cache.get(parseInt(check));
+          
         if (!check1) {
-          jfcID = user.guild.channels.cache.get(user.member.voice.channel.parent.id).id;
+          jfcID = client.channels.cache.get(user.member.voice.channel.parent.id).id;
         } else if (check1) {
-          jfcID = check1;
+          jfcID = check1.id;
+        }          
+        } catch (e) {
+        jfcID = client.channels.cache.get(user.member.voice.channel.parent.id).id;  
         }
       } else if (!check) {
-        jfcID = user.guild.channels.cache.get(user.member.voice.channel.parent.id).id
+        jfcID = client.channels.cache.get(user.member.voice.channel.parent.id).id;
       }
       
+          let checkAgain = client.channels.cache.get(parseInt(jfcID));
+          if (!checkAgain) {
+            
+          }
+          
       await user.guild.channels.create(userChlName, {
         type: 'voice',
         parent: parseInt(jfcID), //or set it as a category id
       }).then(async vc => {
         //move user to the new channel
         user.setChannel(vc); 
+        
+        console.log(`${parseInt(jfcID)}`)
         //set the new channel to the map
         jointocreatemap.set(`tempvoicechannel_${vc.guild.id}_${vc.id}`, vc.id);
         jointocreatemap.set(`jfc.${user.member.user.id}.joined`, true)
