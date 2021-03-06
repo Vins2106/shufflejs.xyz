@@ -16,6 +16,10 @@ app.get("/", async (req, res) => {
   })
 })
 
+app.get("/invite", async (req, res) => {
+  res.redirect("")
+});
+
 app.get("/api", (req, res) => {
   let users = 0;
   client.guilds.cache.map(x => {
