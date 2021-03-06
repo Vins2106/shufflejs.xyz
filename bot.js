@@ -109,17 +109,22 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     let xM = video.duration.minutes * 60000;
     let xS = video.duration.seconds * 1000; 
   
-    if (xH + xM + xS < 60000) {
-      return message.channel.send(`The video cannot be less than 1 minutes, but you can play live stream!`)
-    }
+
   
     let duration;
   
           if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds == 0) {
             duration = "[LIVE]"
           } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.seconds !== 0) {
+    if (xH + xM + xS < 60000) {
+      return message.channel.send(`The video cannot be less than 1 minutes, but you can play live stream!`)
+    }            
+            
             duration = `${video.duration.hours}h : ${video.durations.minutes}m`
           } else {
+    if (xH + xM + xS < 60000) {
+      return message.channel.send(`The video cannot be less than 1 minutes, but you can play live stream!`)
+    }
             
             duration = `${video.duration.hours}h : ${video.duration.minutes}m`
           }
