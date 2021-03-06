@@ -103,15 +103,22 @@ client.on("message", async message => {
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
-    if (video.duration.minutes == 0) return message.channel.send(`I can't play songs that are under 1 minute`)
+    let duration = video.duration;
+  
+    if (duration.hours == 0 && duration.minutes == 0 && duration.minutes == 0) {
+      duration = "[LIVE]"
+    } else {
+      duration = `${video.duration.hours} : ${video.duration.minutes}`
+    }
+  
   
     const song = {
         id: video.id,
         title: Util.escapeMarkdown(video.title),
         url: `https://www.youtube.com/watch?v=${video.id}`,
         thumbnail: video.thumbnails.medium,
-        duration: video.duration,
-        formatDuration: video.durationSeconds,
+        duration: duration,
+        formatDuration: video.duration,
         user: message.author,
         guild: message.guild,
         message
@@ -153,7 +160,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         new Discord.MessageEmbed()
           .setAuthor("New song added to queue!")
           .setColor(config.embed)
-          .setTitle(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**`)
+          .setTitle(`**${song.title}** - **${song.duration}**`)
           .setDescription(`${song.url}`)
           .setImage(song.thumbnail.url)
         );
@@ -237,7 +244,7 @@ async function play(message, song) {
     serverQueue.textChannel.send(new Discord.MessageEmbed()
                                  .setAuthor(`Now playing - ${song.user.username}`)
                                  .setColor(config.embed)
-                                 .setDescription(`**${song.title}** - **${song.duration.hours}** : **${song.duration.minutes}** : **${song.duration.seconds}**\n\nLoop: **${serverQueue.loop ? "on" : "off"}** | Volume: **${serverQueue.volume}** | Autoplay: **${serverQueue.autoplay ? "on" : "off"}** | Requested by: **${song.user.tag} ${song.user.bot ? "[BOT]" : ""}**`)
+                                 .setDescription(`**${song.title}** - **${song.duration}**\n\nLoop: **${serverQueue.loop ? "on" : "off"}** | Volume: **${serverQueue.volume}** | Autoplay: **${serverQueue.autoplay ? "on" : "off"}** | Requested by: **${song.user.tag} ${song.user.bot ? "[BOT]" : ""}**`)
                                  .setImage(song.thumbnail.url)
                                  .setFooter(`${song.url}`)).then(m => {
       

@@ -2,9 +2,9 @@ const config = require("../../config.js");
 
 async function createReactionMusic(m, song, message, client, serverQueue) {
       const filter = (reaction, user) => user.id !== client.user.id;
-      let _time1 = song.duration.hours * 3600000;
-      let _time2 = song.duration.minutes * 60000;
-      let _time3 = song.duration.seconds * 1000;
+      let _time1 = song.formatDuration.hours * 3600000;
+      let _time2 = song.formatDuration.minutes * 60000;
+      let _time3 = song.formatDuration.seconds * 1000;
       let time = _time1 + _time2 + _time3;
       
       var collector = m.createReactionCollector(filter, {time: time})
