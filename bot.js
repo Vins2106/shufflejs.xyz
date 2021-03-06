@@ -105,17 +105,11 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
     let durations;
   
-        try {
           if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds) {
             durations = "[LIVE]"
           } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
             durations = `${video.duration.hours} : ${video.durations.minutes}`
-          } else {
-            durations = "[TIME UNKNOWN]"
-          }          
-        } catch (e) {
-          durations = "[TIME UNKNOWN]"
-        }
+          }
   
   
     const song = {
@@ -222,18 +216,11 @@ async function play(message, song) {
           
           let durations;
         
-        
-        try {
           if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds) {
             durations = "[LIVE]"
           } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
             durations = `${video.duration.hours} : ${video.durations.minutes}`
-          } else {
-            durations = "[TIME UNKNOWN]"
-          }          
-        } catch (e) {
-          durations = "[TIME UNKNOWN]"
-        }
+          }
           
           let songConstructor =
               {
@@ -248,10 +235,8 @@ async function play(message, song) {
                   message                
               }
           
-          serverQueue.latestSong = songConstructor
-          serverQueue.songs.push(songConstructor) 
-          
-          return play(message, serverQueue.songs[0])        
+          return handleVideo(video, message, serverQueue.voiceChannel)
+
       } else if (!serverQueue.autoplay) {
         serverQueue.voiceChannel.leave();
         
