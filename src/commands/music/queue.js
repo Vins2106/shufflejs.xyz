@@ -12,7 +12,7 @@ exports.run = async (message, client, args, music, config) => {
   
   const queueE = new MessageEmbed()
   .setAuthor(message.guild.name + " queue! c:", message.guild.iconURL())
-  .setDescription(`Current: **${queue.songs[0].title}** - **${queue.songs[0].song.duration}**
+  .setDescription(`Current: **${queue.songs[0].title}** - **${queue.songs[0].duration}**
   
   ${songs.map(song => `**[${++index}.]** - **${song.title}** - **${song.duration}**`).join("\n\n")}`)
   .setImage(queue.songs[0].thumbnail.url)
