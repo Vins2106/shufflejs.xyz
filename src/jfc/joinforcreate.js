@@ -120,13 +120,18 @@ module.exports = function (client) {
       let jfcID = await jointocreatemap.get(`jfcCat.${user.guild.id}`);
       let userChlName = jointocreatemap.get(`jfc.${user.member.user.id}.name`);
       if (!userChlName) userChlName = `🔊 - ${user.member.user.username} Voice`
+      if (!jfcID) {
+        let fetchFirst = await client.channels.fetch(user.member.voice.channel.parent.id);
+        
+        return jfcID = client.channels.cache.get(fetchFirst.id);
+      }
       
       await user.guild.channels.create(userChlName, {
         type: 'voice',
-        parent: jfcID, //or set it as a category id
+        parent: user.guild.channels.cache.get(jfcID).id, //or set it as a category id
       }).then(async vc => {
         //move user to the new channel
-        user.setChannel(vc);
+        user.setChannel(vc); 
         //set the new channel to the map
         jointocreatemap.set(`tempvoicechannel_${vc.guild.id}_${vc.id}`, vc.id);
         jointocreatemap.set(`jfc.${user.member.user.id}.joined`, true)
