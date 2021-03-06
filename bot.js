@@ -188,7 +188,6 @@ async function play(message, song) {
     }
 
     const dispatcher = serverQueue.connection.play(ytdl(song.url), {
-      highWaterMark: 1 >> 25,
       quality: "highestaudio",
       encoderArgs: ['-af', serverQueue.filters]
     }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
@@ -256,6 +255,8 @@ async function play(message, song) {
         
         return music.delete(message.guild.id)
       }
+           } else {
+             return play(message, serverQueue.songs[0])
            }
             
           } catch (e) {
