@@ -267,7 +267,7 @@ async function play(message, song) {
                                  .setAuthor(`Now playing - ${song.user.username}`)
                                  .setColor(config.embed)
                                  .setDescription(`**${song.title}** - **${song.duration}**\n\nLoop: **${serverQueue.loop ? "on" : "off"}** | Volume: **${serverQueue.volume}** | Autoplay: **${serverQueue.autoplay ? "on" : "off"}** | Requested by: **${song.user.tag} ${song.user.bot ? "[BOT]" : ""}**`)
-                                 .setImage(song.thumbnail.url)
+                                 .setImage(`https://www.youtube.com/embed/${song.id}`)
                                  .setFooter(`${song.url}`)).then(m => {
       
       m.react("🔁");
