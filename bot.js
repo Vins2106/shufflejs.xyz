@@ -109,8 +109,8 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
     let xM = video.duration.minutes * 60000;
     let xS = video.duration.seconds * 1000; 
   
-    if (xH + xM + xS < 10000) {
-      return message.channel.send(`The video cannot be less than 10 seconds, but you can play live stream!`)
+    if (xH + xM + xS < 60000) {
+      return message.channel.send(`The video cannot be less than 1 minutes, but you can play live stream!`)
     }
   
     let duration;
