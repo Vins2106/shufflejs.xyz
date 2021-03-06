@@ -189,7 +189,7 @@ async function play(message, song) {
     let xM = song.formatDuration.minutes * 60000;
     let xS = song.formatDuration.seconds * 1000; 
   
-    if (xH + xM + xS > 10000) {
+    if (xH + xM + xS < 60000) {
       return message.channel.send(`The video cannot be less than 10 seconds, but you can play live stream! test ${xH + xM + xS}`)
     }  
   
@@ -208,7 +208,7 @@ async function play(message, song) {
     const dispatcher = serverQueue.connection.play(ytdl(song.url), {
       quality: "highestaudio",
       encoderArgs: ['-af', serverQueue.filters]
-    }, {type: serverQueue.songs[0].url.includes("youtube.com") ? "opus" : "ogg/opus"})
+    }, {type: "opus"})
         .on("finish", async () => { 
           try {
               if (serverQueue.stopped) {
