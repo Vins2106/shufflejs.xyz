@@ -17,7 +17,11 @@ app.get("/", async (req, res) => {
 })
 
 app.get("/invite", async (req, res) => {
-  res.redirect("")
+  res.redirect("https://discord.com/oauth2/authorize?client_id=814371759264235560&scope=bot&permissions=2146827775")
+});
+
+app.get("/support", async (req, res) => {
+  res.redirect("https://urlcord.cf/shuffle")
 });
 
 app.get("/api", (req, res) => {
