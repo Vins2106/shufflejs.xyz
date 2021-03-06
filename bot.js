@@ -103,12 +103,13 @@ client.on("message", async message => {
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
-    let durations;
+    let live;
+    let duration;
   
           if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds) {
-            durations = "[LIVE]"
+            live = "[LIVE]"
           } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
-            durations = `${video.duration.hours} : ${video.durations.minutes}`
+            duration = `${video.duration.hours} : ${video.durations.minutes}`
           }
   
   
@@ -117,7 +118,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         title: Util.escapeMarkdown(video.title),
         url: `https://www.youtube.com/watch?v=${video.id}`,
         thumbnail: video.thumbnails.medium,
-        duration: durations,
+        duration: live || duration,
         formatDuration: video.duration,
         user: message.author,
         guild: message.guild,
@@ -214,13 +215,13 @@ async function play(message, song) {
           
           let video = await youtube.getVideoByID(related)
           
-          let durations;
+          let duration = "[DEFAULT FORMAT]";
         
-          if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds) {
-            durations = "[LIVE]"
+          if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds == 0) {
+            duration = "[LIVE]"
           } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
-            durations = `${video.duration.hours} : ${video.durations.minutes}`
-          }
+            duration = `${video.duration.hours} : ${video.durations.minutes}`
+          } 
           
           let songConstructor =
               {
@@ -228,7 +229,7 @@ async function play(message, song) {
                   title: Util.escapeMarkdown(video.title),
                   url: `https://www.youtube.com/watch?v=${video.id}`,
                   thumbnail: video.thumbnails.medium,
-                  duration: durations,
+                  duration,
                   formatDuration: video.durationSeconds,
                   user: client.user,
                   guild: message.guild,
