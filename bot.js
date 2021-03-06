@@ -105,6 +105,8 @@ client.on("message", async message => {
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
+    let xH = video.duration.hours * 3600000
+  
     let duration;
   
           if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds == 0) {
