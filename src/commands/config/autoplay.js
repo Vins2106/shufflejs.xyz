@@ -1,8 +1,8 @@
-let db = require('quick.db');
-
 exports.run = async (message, client, args, music, config, handleVideo, play, youtube, url) => {
   
   if (!message.member.hasPermission("MANAGE_GUILD")) return message.channel.send(`Hey, please contact **${message.guild.id}** admin to give you **Manage Guild** permission!`);
+  
+  if (!music.get(message.guild.id)) return message.channel.send(`Please play a music first!`)
   
   let msg = await message.channel.send(`React with ↪️ for **turn on or turn off autoplay**`);
   
@@ -20,10 +20,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
         
         reaction.users.remove(user);
         
-        let autoplayGuild = await db.get(`autoplay.${message.guild.id}`);
-        if (!autoplayGuild) autoplayGuild = true;
-        
-        let _enable = autoplayGuild ? true : false;
+        let _enable = music.get(message.guild.id).autoplay ? true : false;
         let _conf = _enable;
         
         
@@ -33,12 +30,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           _conf = true;
         }
         
-        let workAP_ = music.get(message.guild.id).autoplay = _conf;
-        if (!workAP_) {
-          
-        }
-        
-        db.set(`autoplay.${message.guild.id}`, _conf)
+        music.get(message.guild.id).autoplay = _conf;
         
         msg.delete();
         
