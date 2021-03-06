@@ -103,12 +103,12 @@ client.on("message", async message => {
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
-    let duration = video.duration;
+    let durations;
   
-    if (duration.hours == 0 && duration.minutes == 0 && duration.minutes == 0) {
-      duration = "[LIVE]"
-    } else {
-      duration = `${video.duration.hours} : ${video.duration.minutes}`
+    if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.minutes == 0) {
+      durations = "[LIVE]"
+    } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
+      durations = `${video.duration.hours} : ${video.duration.minutes}`
     }
   
   
@@ -117,13 +117,16 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
         title: Util.escapeMarkdown(video.title),
         url: `https://www.youtube.com/watch?v=${video.id}`,
         thumbnail: video.thumbnails.medium,
-        duration: duration,
+        duration: durations,
         formatDuration: video.duration,
         user: message.author,
         guild: message.guild,
         message
     };
     if (!serverQueue) {
+      
+      let autoplay = await client.guildConfig.get(`autoplay.${message.guild.id}`);
+      if (typeof autoplay == undefined) autoplay = true;
       
         const queueConstruct = {
             textChannel: message.channel,
@@ -134,7 +137,7 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
             playing: true,
             loop: false,
             shuffle: false,
-            autoplay: true,
+            autoplay: autoplay,
             latestSong: song,
             stopped: false,
             filters: []
@@ -214,13 +217,21 @@ async function play(message, song) {
           
           let video = await youtube.getVideoByID(related)
           
+          let durations;
+        
+          if (video.duration.hours == 0 && video.duration.minutes == 0 && video.duration.seconds) {
+            durations = "[LIVE]"
+          } else if (video.duration.hours !== 0 && video.duration.minutes !== 0 && video.duration.minutes !== 0) {
+            durations = `${video.duration.hours} : ${video.durations.minutes}`
+          }
+          
           let songConstructor =
               {
                   id: video.id,
                   title: Util.escapeMarkdown(video.title),
                   url: `https://www.youtube.com/watch?v=${video.id}`,
                   thumbnail: video.thumbnails.medium,
-                  duration: video.duration,
+                  duration: durations,
                   formatDuration: video.durationSeconds,
                   user: client.user,
                   guild: message.guild,
@@ -231,7 +242,7 @@ async function play(message, song) {
           serverQueue.songs.push(songConstructor) 
           
           return play(message, serverQueue.songs[0])        
-      }               
+      } else if (!serverQueue)
            }
             
           } catch (e) {
