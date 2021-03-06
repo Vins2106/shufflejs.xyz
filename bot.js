@@ -185,13 +185,6 @@ async function handleVideo(video, message, voiceChannel, playlist = false) {
 
 async function play(message, song) {
   const guild = message.guild;
-    let xH = song.formatDuration.hours * 3600000;
-    let xM = song.formatDuration.minutes * 60000;
-    let xS = song.formatDuration.seconds * 1000; 
-  
-    if (xH + xM + xS < 60000) {
-      return message.channel.send(`The video cannot be less than 10 seconds, but you can play live stream! test ${xH + xM + xS}`)
-    }  
   
     const serverQueue = music.get(guild.id);
 
@@ -203,12 +196,12 @@ async function play(message, song) {
         }))
     
         return music.delete(message.guild.id)
-    }
+    } 
 
     const dispatcher = serverQueue.connection.play(ytdl(song.url), {
       quality: "highestaudio",
       encoderArgs: ['-af', serverQueue.filters]
-    }, {type: "opus"})
+    }, {filter: "audioonly", type: "opus"})
         .on("finish", async () => { 
           try {
               if (serverQueue.stopped) {
