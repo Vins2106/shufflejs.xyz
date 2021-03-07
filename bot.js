@@ -1,4 +1,6 @@
 const Discord = require("discord.js");
+const { Collection } = require("discord.js")
+const cooldowns = new Collection()
 const client = new Discord.Client({
   disableMentions: "everyone"
 });
@@ -97,11 +99,41 @@ client.on("message", async message => {
   
   let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
   if (!command) return;
+  if (!cooldowns.has(command.config.name)) {
+    cooldowns.set(command.config.name, new Collection());
+  }  
+  
+  let member = message.author;
+  const now = Date.now();
+  const timestamps = cooldowns.get(command.config.name);
+  const cooldownAmount = (command.config.cooldown || 10) * 1000;
+
+
+  
+  if (!timestamps.has(member.id)) {
+    timestamps.set(member.id, now);
+  } else {
+    const expirationTime = timestamps.get(member.id) + cooldownAmount;
+
+    if (now < expirationTime) {
+      const timeLeft = (expirationTime - now) / 1000;
+      return message.channel.send(`⏲️ <@${message.author.id}> - **Please wait \`${timeLeft.toFixed(1)}s\`**`).then(m => {
+        m.delete({
+          timeout: 5000
+        })
+      })
+    }
+
+    timestamps.set(member.id, now);
+    setTimeout(() => timestamps.delete(member.id), cooldownAmount);
+  }  
   
   command.run(message, client, args, music, config, handleVideo, play, youtube, url)
 })
 
 // events akhir
+
+// music function
 
 async function handleVideo(video, message, voiceChannel, playlist = false) {
     const serverQueue = music.get(message.guild.id);
