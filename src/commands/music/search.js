@@ -38,7 +38,7 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
           .setAuthor(`search result for ${searchString}`, client.user.displayAvatarURL())
           .setColor(config.embed)
           .setFooter('select from 1 - 10! or cancel')
-          .setDescription(videos.map(song => `**[${++index}.]** - **${song.title}**\n${song.url}`).join("\n\n"));
+          .setDescription(videos.map(song => `**[${++index}.]** - **${song.title}**\n${song.url}`));
           
           message.channel.send(searchE).then(m => {
             m.delete({

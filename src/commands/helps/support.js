@@ -1,6 +1,6 @@
 exports.run = async (message, client, args, music, config, handleVideo, play, youtube, url) => {
   
-  message.channel.send(`https://shufflejs.xyz/support`)
+  message.channel.send(`https://urlcord.cf/shuffle`)
   
 }
 

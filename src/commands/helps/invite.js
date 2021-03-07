@@ -1,6 +1,6 @@
 exports.run = async (message, client, args, music, config, handleVideo, play, youtube, url) => {
   
-  message.channel.send(`https://shufflejs.xyz/invite`)
+  message.channel.send(`https://discord.com/oauth2/authorize?client_id=814371759264235560&scope=bot&permissions=2146827775`)
   
 }
 
