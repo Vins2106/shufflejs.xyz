@@ -4,9 +4,9 @@ exports.run = async (message, client, args, music, config, handleVideo, play, yo
   let queue = music.get(message.guild.id);
   
   if (!message.guild.me.voice.channel) return message.channel.send(`I do not join any voice channel!`)
-  if (queue) return message.channel.send(`Im currently playing music in \`${queue.voiceChannel.name}\``)
   if (!userVC) return message.channel.send(`Please join voice channel!`);
   if (message.guild.me.voice.channel.id !== userVC.id) return message.channel.send(`You need to join same voice channel as ${client.user.username} !`)
+  
   
   if (userVC.members.length < 2) {
     userVC.leave();
