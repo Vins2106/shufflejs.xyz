@@ -1,6 +1,6 @@
 # Author: Vincent Saerang
 ```
-website is on developer, wait for next version!
+website is on development, wait for next version!
 ```
 
 # Open source
